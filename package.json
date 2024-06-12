@@ -9,7 +9,7 @@
     "start": "nodemon dist/index.js",
     "lint": "npx eslint .",
     "build": "tsc -w -p tsconfig.build.json",
-    "test": "jest --watch --coverage"
+    "test": "jest --watch --coverage --detectOpenHandles"
   },
   "keywords": [],
   "author": "Catalin Pirtiu: catalinrol@gmail.com",
