@@ -1,4 +1,6 @@
-import "dotenv/config";
+if (process.env.NODE_ENV === "production") {
+    require("dotenv").config();
+}
 import express from "express";
 import session from "express-session";
 import authRouter from "./src/routes/auth/index.js";
@@ -7,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const sessionOptions = {
-    secret: process.env.SESSION_SECRET || [],
+    secret: process.env.SESSION_SECRET || [""],
     resave: true,
     saveUninitialized: true,
     cookie: { secure: false }
