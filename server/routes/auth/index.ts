@@ -1,6 +1,6 @@
 import express from "express";
 
-const authRouter = express.Router();
+const authRouter = express();
 
 authRouter.get("/", (req, res) => {
   res.json({ message: "Hello Everyone!" });
