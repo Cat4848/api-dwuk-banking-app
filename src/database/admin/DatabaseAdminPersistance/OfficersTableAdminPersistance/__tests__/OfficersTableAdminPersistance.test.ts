@@ -6,5 +6,10 @@ test("if officers table created successfully", async () => {
   const officersTable = new OfficersTableAdminPersistance(connection);
   const result = await officersTable.create();
   await connection.end();
+
+  if (!result.success) {
+    throw result.error;
+  }
+  
   expect(result.success).toBe(true);
 });
