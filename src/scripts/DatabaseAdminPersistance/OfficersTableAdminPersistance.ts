@@ -1,9 +1,6 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator, Result } from "../../lib/ResultGenerator";
-
-interface DatabaseAdminPersistance {
-  create: () => Promise<Result>;
-}
+import { ResultGenerator } from "../../lib/ResultGenerator";
+import { DatabaseAdminPersistance } from "./DatabaseAdminPersistance";
 
 export default class OfficersTableAdminPersistance
   implements DatabaseAdminPersistance
