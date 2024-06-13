@@ -1,5 +1,5 @@
 import DatabaseConnection from "../../../database/DatabaseConnection/DatabaseConnection";
-import OfficersTableAdminPersistance from "../DatabaseSeeder";
+import OfficersTableAdminPersistance from "../OfficersTableAdminPersistance";
 
 test("if officers table created successfully", async () => {
   const connection = await DatabaseConnection.createConnection();
