@@ -1,4 +1,4 @@
-import { ResultGenerator } from "../../../../lib/ResultGenerator";
+import { ResultGenerator } from "../../../../lib/ResultGenerator/ResultGenerator";
 export default class TransactionsTableAdminPersistance {
     connection;
     constructor(connection) {

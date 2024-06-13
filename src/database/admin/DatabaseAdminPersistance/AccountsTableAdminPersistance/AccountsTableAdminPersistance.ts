@@ -1,5 +1,5 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator } from "../../../../lib/ResultGenerator";
+import { ResultGenerator } from "../../../../lib/ResultGenerator/ResultGenerator";
 import { DatabaseAdminPersistance } from "../DatabaseAdminPersistance";
 
 export default class AccountsTableAdminPersistance
