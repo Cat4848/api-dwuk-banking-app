@@ -1,5 +1,7 @@
 import DatabaseConnection from "../DatabaseConnection";
 
-test("create DB connection", async () => {
+test("if DB connection created", async () => {
   const connection = await DatabaseConnection.createConnection();
+  expect(connection).toHaveProperty("execute");
+  await connection.end();
 });

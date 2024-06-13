@@ -1,18 +1,13 @@
 import express from "express";
-import session from "express-session";
-import createSessionOptions from "./production.config.js";
 import authRouter from "./src/routes/auth/index.js";
-import passport from "passport";
+import MiddlewareInitializer from "./app.config.js";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(session(createSessionOptions(app)));
-
-app.use(passport.initialize());
-app.use(passport.session());
+const middleware = new MiddlewareInitializer(app);
+middleware.initHTTPBodyParsers();
+middleware.initSession();
+middleware.initAuth();
 
 app.use("/", authRouter);
 
