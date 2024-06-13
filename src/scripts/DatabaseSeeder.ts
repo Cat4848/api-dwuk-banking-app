@@ -1,1 +1,1 @@
-import DatabaseConnection from "../database/DatabaseConnection.ts/DatabaseConnection";
+import DatabaseConnection from "../database/DatabaseConnection/DatabaseConnection";
