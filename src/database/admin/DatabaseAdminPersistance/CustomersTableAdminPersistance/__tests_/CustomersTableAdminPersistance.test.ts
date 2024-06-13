@@ -1,4 +1,4 @@
-import DatabaseConnection from "../../../DatabaseConnection/DatabaseConnection";
+import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnection";
 import CustomersTableAdminPersistance from "../CustomersTableAdminPersistance";
 
 test("if customers table created successfully", async () => {
@@ -10,6 +10,6 @@ test("if customers table created successfully", async () => {
   if (!result.success) {
     throw result.error;
   }
-  
+
   expect(result.success).toBe(true);
 });
