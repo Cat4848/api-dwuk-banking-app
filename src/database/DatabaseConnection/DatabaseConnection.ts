@@ -7,12 +7,10 @@ export default class DatabaseConnection {
       const connection = await mysql.createConnection(process.env.JAWSDB_URL);
       return connection;
     } else {
-      const connection = await mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME
-      });
+      const error = new Error(
+        "JAWSDB_URL not available in environment variables"
+      );
+      const connection = await mysql.createConnection(error.message);
       return connection;
     }
   }
