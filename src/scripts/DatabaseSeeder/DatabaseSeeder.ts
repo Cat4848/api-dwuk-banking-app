@@ -1,14 +1,18 @@
-import DatabaseConnection from "../../database/DatabaseConnection/DatabaseConnection";
 import mysql from "mysql2/promise";
 
-export default class DatabaseSeeder {
+interface DatabaseAdminPersistance {
+  create: () => void;
+}
+
+export default class OfficersTableAdminPersistance
+  implements DatabaseAdminPersistance
+{
   private connection;
 
   constructor(connection: mysql.Connection) {
     this.connection = connection;
   }
-
-  async initOfficersTable() {
+  async create() {
     await this.connection.execute(
       `CREATE TABLE IF NOT EXISTS officers (
         officer_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -18,15 +22,6 @@ export default class DatabaseSeeder {
         password VARCHAR(255) NOT NULL,
         PRIMARY KEY (officer_id)
       );`
-    );
-  }
-
-  async seedOfficersTable() {
-    const [result, fields] = await this.connection.execute(
-      `INSERT INTO officers (first_name, last_name, email, password)
-        VALUES (?, ?, ?, ?)
-      ;`,
-      ["Julie", "Bexon", "julie.bexon@dw-group.co.uk", "julie"]
     );
   }
 }
