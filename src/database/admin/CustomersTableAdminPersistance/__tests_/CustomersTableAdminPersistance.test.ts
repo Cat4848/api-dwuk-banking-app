@@ -6,5 +6,10 @@ test("if customers table created successfully", async () => {
   const customerTable = new CustomersTableAdminPersistance(connection);
   const result = await customerTable.create();
   await connection.end();
+
+  if (!result.success) {
+    throw result.error;
+  }
+  
   expect(result.success).toBe(true);
 });
