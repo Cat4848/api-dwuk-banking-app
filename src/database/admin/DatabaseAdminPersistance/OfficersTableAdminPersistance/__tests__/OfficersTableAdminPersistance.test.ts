@@ -1,4 +1,4 @@
-import DatabaseConnection from "../../../database/DatabaseConnection/DatabaseConnection";
+import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnection";
 import OfficersTableAdminPersistance from "../OfficersTableAdminPersistance";
 
 test("if officers table created successfully", async () => {
