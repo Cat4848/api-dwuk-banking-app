@@ -1,11 +1,9 @@
-import DatabaseConnection from "../../DatabaseConnection/DatabaseConnection";
-import CustomersDatabasePersistance from "../CustomersDatabasePersistance";
 import Customer from "../../../lib/Customer/Customer";
 import IDGenerator from "../../../lib/IDGenerator/IDGenerator";
+import createCustomersDatabase from "./helpers/createCustomersDatabase";
 
 test("if a customer has been added successfully to the database", async () => {
-  const connection = await DatabaseConnection.createConnection();
-  const customersDatabase = new CustomersDatabasePersistance(connection);
+  const customersDatabase = await createCustomersDatabase();
 
   const customer = new Customer({
     customer_id: IDGenerator.smallIntRandomID(),
@@ -25,8 +23,7 @@ test("if a customer has been added successfully to the database", async () => {
 });
 
 test("if fetched all customers from database", async () => {
-  const connection = await DatabaseConnection.createConnection();
-  const customersDatabase = new CustomersDatabasePersistance(connection);
+  const customersDatabase = await createCustomersDatabase();
   const result = await customersDatabase.fetchAll();
 
   if (!result.success) {
@@ -37,8 +34,7 @@ test("if fetched all customers from database", async () => {
 });
 
 test("if the database customer record is updated successfully", async () => {
-  const connection = await DatabaseConnection.createConnection();
-  const customersDatabase = new CustomersDatabasePersistance(connection);
+  const customersDatabase = await createCustomersDatabase();
 
   const customer = new Customer({
     customer_id: 4935,
@@ -57,8 +53,7 @@ test("if the database customer record is updated successfully", async () => {
 });
 
 test("if the customer has been deleted successfully", async () => {
-  const connection = await DatabaseConnection.createConnection();
-  const customersDatabase = new CustomersDatabasePersistance(connection);
+  const customersDatabase = await createCustomersDatabase();
   const customerID = 2675;
 
   const result = await customersDatabase.delete(customerID);
