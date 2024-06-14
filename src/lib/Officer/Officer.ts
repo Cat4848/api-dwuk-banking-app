@@ -7,7 +7,7 @@ interface OfficerProps {
   email: string;
 }
 
-export default class Officer {
+export default class Officer implements OfficerProps {
   #officer_id: number = IDGenerator.smallIntRandomID();
   #first_name: string;
   #last_name: string;

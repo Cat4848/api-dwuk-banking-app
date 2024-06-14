@@ -8,7 +8,7 @@ interface CustomerProps {
   email: string;
 }
 
-export default class Customer {
+export default class Customer implements CustomerProps {
   #customer_id: number = IDGenerator.smallIntRandomID();
   #officer_id: number;
   #first_name: string;
