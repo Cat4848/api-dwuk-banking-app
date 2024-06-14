@@ -55,3 +55,17 @@ test("if the database customer record is updated successfully", async () => {
 
   expect(result.success).toBe(true);
 });
+
+test("if the customer has been deleted successfully", async () => {
+  const connection = await DatabaseConnection.createConnection();
+  const customersDatabase = new CustomersDatabasePersistance(connection);
+  const customerID = 2675;
+
+  const result = await customersDatabase.delete(customerID);
+
+  if (!result.success) {
+    throw result.error;
+  }
+
+  expect(result.success).toBe(true);
+});

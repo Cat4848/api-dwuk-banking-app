@@ -64,4 +64,19 @@ export default class CustomersDatabasePersistance {
             await this.connection.end();
         }
     }
+    async delete(customerID) {
+        const resultGenerator = new ResultGenerator();
+        try {
+            const [confirmation] = await this.connection.execute(`DELETE FROM customers WHERE customer_id = ?;`, [customerID]);
+            const success = resultGenerator.generateSuccess(JSON.stringify(confirmation));
+            return success;
+        }
+        catch (e) {
+            const error = resultGenerator.generateError(e);
+            return error;
+        }
+        finally {
+            await this.connection.end();
+        }
+    }
 }
