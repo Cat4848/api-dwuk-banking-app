@@ -1,5 +1,3 @@
-import IDGenerator from "../IDGenerator/IDGenerator";
-
 interface AccountProps {
   account_id: number;
   customer_id: number;
@@ -12,7 +10,7 @@ interface AccountProps {
 }
 
 export default class Account implements AccountProps {
-  #account_id: number = IDGenerator.smallIntRandomID();
+  #account_id: number;
   #customer_id: number;
   #officer_id: number;
   #open_date: string;
@@ -22,6 +20,7 @@ export default class Account implements AccountProps {
   #balance: number;
 
   constructor({
+    account_id,
     customer_id,
     officer_id,
     open_date,
@@ -30,6 +29,7 @@ export default class Account implements AccountProps {
     status,
     balance
   }: AccountProps) {
+    this.#account_id = account_id;
     this.#customer_id = customer_id;
     this.#officer_id = officer_id;
     this.#open_date = open_date;
