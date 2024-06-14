@@ -1,5 +1,3 @@
-import IDGenerator from "../IDGenerator/IDGenerator";
-
 interface CustomerProps {
   customer_id: number;
   officer_id: number;
@@ -9,13 +7,20 @@ interface CustomerProps {
 }
 
 export default class Customer implements CustomerProps {
-  #customer_id: number = IDGenerator.smallIntRandomID();
+  #customer_id: number;
   #officer_id: number;
   #first_name: string;
   #last_name: string;
   #email: string;
 
-  constructor({ officer_id, first_name, last_name, email }: CustomerProps) {
+  constructor({
+    customer_id,
+    officer_id,
+    first_name,
+    last_name,
+    email
+  }: CustomerProps) {
+    this.#customer_id = customer_id;
     this.#officer_id = officer_id;
     this.#first_name = first_name;
     this.#last_name = last_name;

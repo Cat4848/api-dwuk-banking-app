@@ -1,6 +1,5 @@
-import IDGenerator from "../IDGenerator/IDGenerator";
 export default class Account {
-    #account_id = IDGenerator.smallIntRandomID();
+    #account_id;
     #customer_id;
     #officer_id;
     #open_date;
@@ -8,7 +7,8 @@ export default class Account {
     #last_activity_date;
     #status;
     #balance;
-    constructor({ customer_id, officer_id, open_date, close_date, last_activity_date, status, balance }) {
+    constructor({ account_id, customer_id, officer_id, open_date, close_date, last_activity_date, status, balance }) {
+        this.#account_id = account_id;
         this.#customer_id = customer_id;
         this.#officer_id = officer_id;
         this.#open_date = open_date;
