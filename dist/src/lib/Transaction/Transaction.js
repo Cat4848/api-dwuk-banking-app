@@ -1,12 +1,12 @@
-import IDGenerator from "../IDGenerator/IDGenerator";
 export default class Transaction {
-    #transaction_id = IDGenerator.smallIntRandomID();
+    #transaction_id;
     #from_account_id;
     #to_account_id;
     #officer_id;
     #transaction_date;
     #amount;
-    constructor({ from_account_id, to_account_id, officer_id, transaction_date, amount }) {
+    constructor({ transaction_id, from_account_id, to_account_id, officer_id, transaction_date, amount }) {
+        this.#transaction_id = transaction_id;
         this.#from_account_id = from_account_id;
         this.#to_account_id = to_account_id;
         this.#officer_id = officer_id;

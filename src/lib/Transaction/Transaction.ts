@@ -1,5 +1,3 @@
-import IDGenerator from "../IDGenerator/IDGenerator";
-
 interface TransactionProps {
   transaction_id: number;
   from_account_id: number;
@@ -10,7 +8,7 @@ interface TransactionProps {
 }
 
 export default class Transaction implements TransactionProps {
-  #transaction_id: number = IDGenerator.smallIntRandomID();
+  #transaction_id: number;
   #from_account_id: number;
   #to_account_id: number;
   #officer_id: number;
@@ -18,12 +16,14 @@ export default class Transaction implements TransactionProps {
   #amount: number;
 
   constructor({
+    transaction_id,
     from_account_id,
     to_account_id,
     officer_id,
     transaction_date,
     amount
   }: TransactionProps) {
+    this.#transaction_id = transaction_id;
     this.#from_account_id = from_account_id;
     this.#to_account_id = to_account_id;
     this.#officer_id = officer_id;
