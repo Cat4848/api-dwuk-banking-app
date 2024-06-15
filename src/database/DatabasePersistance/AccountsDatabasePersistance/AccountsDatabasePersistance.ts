@@ -92,12 +92,12 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async putBalance(accountID: number, newBalance: number) {
+  async putBalance(account: Account) {
     const resultGenerator = new ResultGenerator();
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
         `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
-        [newBalance, accountID]
+        [account.balance, account.account_id]
       );
 
       const success = resultGenerator.generateSuccess(

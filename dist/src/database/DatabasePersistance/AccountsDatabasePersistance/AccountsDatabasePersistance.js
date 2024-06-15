@@ -73,10 +73,10 @@ export default class AccountsDatabasePersistance {
             await this.connection.end();
         }
     }
-    async putBalance(accountID, newBalance) {
+    async putBalance(account) {
         const resultGenerator = new ResultGenerator();
         try {
-            const [confirmation] = await this.connection.execute(`UPDATE accounts SET balance = ? WHERE account_id = ?;`, [newBalance, accountID]);
+            const [confirmation] = await this.connection.execute(`UPDATE accounts SET balance = ? WHERE account_id = ?;`, [account.balance, account.account_id]);
             const success = resultGenerator.generateSuccess(JSON.stringify(confirmation));
             return success;
         }

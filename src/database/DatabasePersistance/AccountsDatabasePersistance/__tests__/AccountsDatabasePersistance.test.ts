@@ -126,17 +126,27 @@ test("if specific account status changed to ACTIVE", async () => {
 test("if the account balance updates correctly", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
-  const newBalance = 300;
+  const newBalance = 400;
+  const account = new Account({
+    account_id: accountID,
+    customer_id: 59,
+    officer_id: 1,
+    open_date: new Date().toISOString(),
+    last_activity_date: new Date().toISOString(),
+    status: "ACTIVE",
+    balance: newBalance
+  });
 
-  await accountsDatabase.putBalance(accountID, newBalance);
+  await accountsDatabase.putBalance(account);
 
   const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+  const updatedAccount =
+    await accountsDatabaseNewConnection.fetchByID(accountID);
 
-  if (!account.success) {
-    throw account.error;
+  if (!updatedAccount.success) {
+    throw updatedAccount.error;
   }
 
   const balancePattern = new RegExp(`"balance":${newBalance}`);
-  expect(account.data).toMatch(balancePattern);
+  expect(updatedAccount.data).toMatch(balancePattern);
 });
