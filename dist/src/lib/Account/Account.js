@@ -41,4 +41,7 @@ export default class Account {
     get balance() {
         return this.#balance;
     }
+    updateBalance(newBalance) {
+        this.#balance = newBalance;
+    }
 }

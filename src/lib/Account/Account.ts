@@ -70,4 +70,8 @@ export default class Account implements AccountProps {
   get balance() {
     return this.#balance;
   }
+
+  updateBalance(newBalance: number) {
+    this.#balance = newBalance;
+  }
 }
