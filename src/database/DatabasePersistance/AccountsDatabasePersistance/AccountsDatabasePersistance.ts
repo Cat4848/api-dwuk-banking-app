@@ -1,6 +1,7 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
 import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
 import Account from "../../../lib/Account/Account";
+import AccountRecord from "./declaration/AccountRecord";
 
 export default class AccountsDatabasePersistance {
   private connection;
@@ -29,6 +30,23 @@ export default class AccountsDatabasePersistance {
       const success = resultGenerator.generateSuccess(
         JSON.stringify(confirmation)
       );
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
+
+  async fetchAll() {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [accounts] = await this.connection.execute<AccountRecord[]>(
+        `SELECT * FROM accounts;`
+      );
+
+      const success = resultGenerator.generateSuccess(JSON.stringify(accounts));
       return success;
     } catch (e) {
       const error = resultGenerator.generateError(e);

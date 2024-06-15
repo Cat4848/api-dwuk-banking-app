@@ -24,3 +24,15 @@ test("if an account has been added successfully to database", async () => {
 
   expect(result.success).toBe(true);
 });
+
+test("if fetched all accounts from database", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accounts = await accountsDatabase.fetchAll();
+
+  if (!accounts.success) {
+    throw accounts.error;
+  }
+
+  expect(accounts.success).toBe(true);
+  expect(accounts.data).toMatch(/"account_id":6219/ig);
+});

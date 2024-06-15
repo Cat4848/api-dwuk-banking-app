@@ -28,4 +28,19 @@ export default class AccountsDatabasePersistance {
             await this.connection.end();
         }
     }
+    async fetchAll() {
+        const resultGenerator = new ResultGenerator();
+        try {
+            const [accounts] = await this.connection.execute(`SELECT * FROM accounts;`);
+            const success = resultGenerator.generateSuccess(JSON.stringify(accounts));
+            return success;
+        }
+        catch (e) {
+            const error = resultGenerator.generateError(e);
+            return error;
+        }
+        finally {
+            await this.connection.end();
+        }
+    }
 }
