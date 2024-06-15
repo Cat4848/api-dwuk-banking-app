@@ -1,11 +1,9 @@
 import Account from "../../../../lib/Account/Account";
 import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
-import DatabaseConnection from "../../../DatabaseConnection/DatabaseConnection";
-import AccountsDatabasePersistance from "../AccountsDatabasePersistance";
+import createAccountsDatabase from "./helpers/createAccountsDatabase";
 
 test("if an account has been added successfully to database", async () => {
-  const connection = await DatabaseConnection.createConnection();
-  const accountsDatabase = new AccountsDatabasePersistance(connection);
+  const accountsDatabase = await createAccountsDatabase();
 
   const accountID = IDGenerator.smallIntRandomID();
   const account = new Account({
