@@ -37,6 +37,20 @@ test("if fetched all accounts from database", async () => {
   expect(accounts.data).toMatch(/"account_id":6219/gi);
 });
 
+test("if specific account has been fetched", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accountID = 6219;
+
+  const account = await accountsDatabase.fetchByID(accountID);
+
+  if (!account.success) {
+    throw account.error;
+  }
+
+  expect(account.success).toBe(true);
+  expect(account.data).toMatch(/"account_id":6219/gi);
+});
+
 test("if account containing customer_id=59 has been fetched", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const customerID = 59;
