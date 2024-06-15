@@ -122,3 +122,21 @@ test("if specific account status changed to ACTIVE", async () => {
 
   expect(account.data).toMatch(/"status":"ACTIVE"/gi);
 });
+
+test("if the account balance updates correctly", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accountID = 6219;
+  const newBalance = 300;
+
+  await accountsDatabase.putBalance(accountID, newBalance);
+
+  const accountsDatabaseNewConnection = await createAccountsDatabase();
+  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+
+  if (!account.success) {
+    throw account.error;
+  }
+
+  const balancePattern = new RegExp(`"balance":${newBalance}`);
+  expect(account.data).toMatch(balancePattern);
+});

@@ -92,6 +92,26 @@ export default class AccountsDatabasePersistance {
     }
   }
 
+  async putBalance(accountID: number, newBalance: number) {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [confirmation] = await this.connection.execute<ResultSetHeader>(
+        `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
+        [newBalance, accountID]
+      );
+
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(confirmation)
+      );
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
+
   async freeze(accountID: number) {
     const resultGenerator = new ResultGenerator();
     try {
