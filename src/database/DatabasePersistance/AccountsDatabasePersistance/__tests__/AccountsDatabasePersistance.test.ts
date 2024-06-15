@@ -2,9 +2,8 @@ import Account from "../../../../lib/Account/Account";
 import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
 import createAccountsDatabase from "./helpers/createAccountsDatabase";
 
-test("if an account has been added successfully to database", async () => {
+test("if newly posted account is in database", async () => {
   const accountsDatabase = await createAccountsDatabase();
-
   const accountID = IDGenerator.smallIntRandomID();
   const account = new Account({
     account_id: accountID,
@@ -16,13 +15,18 @@ test("if an account has been added successfully to database", async () => {
     balance: 100
   });
 
-  const result = await accountsDatabase.post(account);
+  await accountsDatabase.post(account);
 
-  if (!result.success) {
-    throw result.error;
+  const accountsDatabaseNewConnection = await createAccountsDatabase();
+  const postedAccount =
+    await accountsDatabaseNewConnection.fetchByID(accountID);
+
+  if (!postedAccount.success) {
+    throw postedAccount.error;
   }
-
-  expect(result.success).toBe(true);
+  const matchPattern = new RegExp(`"account_id":${accountID}`, "gi");
+  
+  expect(postedAccount.data).toMatch(matchPattern);
 });
 
 test("if fetched all accounts from database", async () => {
