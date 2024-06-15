@@ -135,4 +135,25 @@ export default class AccountsDatabasePersistance {
       await this.connection.end();
     }
   }
+  async activate(accountID: number) {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [confirmation] = await this.connection.execute<ResultSetHeader>(
+        `UPDATE accounts SET
+          status = "ACTIVE"
+          WHERE account_id = ?;`,
+        [accountID]
+      );
+
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(confirmation)
+      );
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
 }

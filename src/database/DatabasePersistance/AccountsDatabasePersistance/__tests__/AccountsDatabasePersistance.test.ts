@@ -106,3 +106,19 @@ test("if specific account status changed to CLOSED", async () => {
 
   expect(account.data).toMatch(/"status":"CLOSED"/gi);
 });
+
+test("if specific account status changed to ACTIVE", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accountID = 6219;
+
+  await accountsDatabase.activate(accountID);
+
+  const accountsDatabaseNewConnection = await createAccountsDatabase();
+  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+
+  if (!account.success) {
+    throw account.error;
+  }
+
+  expect(account.data).toMatch(/"status":"ACTIVE"/gi);
+});
