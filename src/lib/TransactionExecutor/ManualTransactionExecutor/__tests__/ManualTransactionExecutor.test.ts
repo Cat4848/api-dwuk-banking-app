@@ -43,7 +43,7 @@ test("if balance method returns NOT enough balance", async () => {
   expect(enoughBalance).toBeFalsy();
 });
 
-test("if deduct account amount is correct after deduction", () => {
+test("if fromAccount amount is correct after deduction", () => {
   const transactionAmount = 50;
   const precomputedValue = fromAccount.balance - transactionAmount;
 
@@ -55,5 +55,20 @@ test("if deduct account amount is correct after deduction", () => {
   manualTransactionExecutor.deduct(transactionAmount);
   const remainingBalance = manualTransactionExecutor.fromAccount.balance;
   
+  expect(remainingBalance).toBe(precomputedValue);
+});
+
+test("if toAccount amount is correct after addition", () => {
+  const transactionAmount = 50;
+  const precomputedValue = toAccount.balance + transactionAmount;
+
+  const manualTransactionExecutor = new ManualTransactionExecutor(
+    fromAccount,
+    toAccount
+  );
+
+  manualTransactionExecutor.add(transactionAmount);
+  const remainingBalance = manualTransactionExecutor.toAccount.balance;
+
   expect(remainingBalance).toBe(precomputedValue);
 });
