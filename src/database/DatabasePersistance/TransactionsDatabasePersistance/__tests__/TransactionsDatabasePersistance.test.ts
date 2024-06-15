@@ -18,11 +18,19 @@ test("if newly posted transaction is in database", async () => {
     amount: 50
   });
 
-  const result = await transactionsDatabase.post(transaction);
+  await transactionsDatabase.post(transaction);
 
-  if (!result.success) {
-    throw result.error;
+  const transactionsDatabaseNewConnection = await createTransactionsDatabase();
+  const postedTransaction =
+    await transactionsDatabaseNewConnection.fetchByID(transactionID);
+
+  if (!postedTransaction.success) {
+    throw postedTransaction.error;
   }
 
-  expect(result.success).toBe(true);
+  const postedTransactionPattern = new RegExp(
+    `"transaction_id":${transactionID}`,
+    "gi"
+  );
+  expect(postedTransaction.data).toMatch(postedTransactionPattern);
 });

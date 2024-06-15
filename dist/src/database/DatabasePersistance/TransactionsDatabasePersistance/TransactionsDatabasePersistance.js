@@ -26,4 +26,19 @@ export default class TransactionsDatabasePersistance {
             await this.connection.end();
         }
     }
+    async fetchByID(transactionID) {
+        const resultGenerator = new ResultGenerator();
+        try {
+            const [transaction] = await this.connection.execute(`SELECT * FROM transactions WHERE transaction_id = ?;`, [transactionID]);
+            const success = resultGenerator.generateSuccess(JSON.stringify(transaction));
+            return success;
+        }
+        catch (e) {
+            const error = resultGenerator.generateError(e);
+            return error;
+        }
+        finally {
+            await this.connection.end();
+        }
+    }
 }

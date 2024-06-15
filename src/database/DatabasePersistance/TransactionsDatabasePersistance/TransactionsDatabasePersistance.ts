@@ -1,6 +1,7 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
 import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
 import Transaction from "../../../lib/Transaction/Transaction";
+import TransactionRecord from "./declaration/TransactionRecord";
 
 export default class TransactionsDatabasePersistance {
   private connection;
@@ -26,6 +27,26 @@ export default class TransactionsDatabasePersistance {
 
       const success = resultGenerator.generateSuccess(
         JSON.stringify(confirmation)
+      );
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
+
+  async fetchByID(transactionID: number) {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [transaction] = await this.connection.execute<TransactionRecord[]>(
+        `SELECT * FROM transactions WHERE transaction_id = ?;`,
+        [transactionID]
+      );
+
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(transaction)
       );
       return success;
     } catch (e) {
