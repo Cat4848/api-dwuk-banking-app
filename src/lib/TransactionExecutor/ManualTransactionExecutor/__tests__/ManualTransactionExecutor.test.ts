@@ -26,9 +26,9 @@ test("if balance method returns enough balance", async () => {
     fromAccount,
     toAccount
   );
-  const transactionBalance = 50;
+  const transactionAmount = 50;
   const enoughBalance =
-    manualTransactionExecutor.isEnoughBalance(transactionBalance);
+    manualTransactionExecutor.isEnoughBalance(transactionAmount);
   expect(enoughBalance).toBeTruthy();
 });
 
@@ -37,8 +37,23 @@ test("if balance method returns NOT enough balance", async () => {
     fromAccount,
     toAccount
   );
-  const transactionBalance = 300;
+  const transactionAmount = 300;
   const enoughBalance =
-    manualTransactionExecutor.isEnoughBalance(transactionBalance);
+    manualTransactionExecutor.isEnoughBalance(transactionAmount);
   expect(enoughBalance).toBeFalsy();
+});
+
+test("if deduct account amount is correct after deduction", () => {
+  const transactionAmount = 50;
+  const precomputedValue = fromAccount.balance - transactionAmount;
+
+  const manualTransactionExecutor = new ManualTransactionExecutor(
+    fromAccount,
+    toAccount
+  );
+
+  manualTransactionExecutor.deduct(transactionAmount);
+  const remainingBalance = manualTransactionExecutor.fromAccount.balance;
+  
+  expect(remainingBalance).toBe(precomputedValue);
 });

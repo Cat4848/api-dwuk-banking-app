@@ -4,12 +4,20 @@ import Transaction from "../../Transaction/Transaction";
 import createAccountsDatabase from "../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
 
 export default class ManualTransactionExecutor implements TransactionExecutor {
-  private fromAccount: Account;
-  private toAccount: Account;
+  #fromAccount: Account;
+  #toAccount: Account;
 
   constructor(fromAccount: Account, toAccount: Account) {
-    this.fromAccount = fromAccount;
-    this.toAccount = toAccount;
+    this.#fromAccount = fromAccount;
+    this.#toAccount = toAccount;
+  }
+
+  get fromAccount() {
+    return this.#fromAccount;
+  }
+
+  get toAccount() {
+    return this.#toAccount;
   }
 
   async executeTransaction(amount: number): Promise<Transaction> {
@@ -32,17 +40,17 @@ export default class ManualTransactionExecutor implements TransactionExecutor {
   }
 
   isEnoughBalance(transactionAmount: number): boolean {
-    return this.fromAccount.balance >= transactionAmount;
+    return this.#fromAccount.balance >= transactionAmount;
   }
 
   deduct(amount: number): void {
-    const newBalance = this.fromAccount.balance - amount;
-    this.fromAccount.updateBalance(newBalance);
+    const newBalance = this.#fromAccount.balance - amount;
+    this.#fromAccount.updateBalance(newBalance);
   }
 
   add(amount: number): void {
-    const newBalance = this.toAccount.balance + amount;
-    this.toAccount.updateBalance(newBalance);
+    const newBalance = this.#toAccount.balance + amount;
+    this.#toAccount.updateBalance(newBalance);
   }
 }
 
