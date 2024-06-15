@@ -55,7 +55,9 @@ test("if specific account has been fetched", async () => {
   }
 
   expect(account.success).toBe(true);
-  expect(account.data).toMatch(/"account_id":6219/gi);
+
+  const accountPattern = new RegExp(`"account_id":${accountID}`, "gi");
+  expect(account.data).toMatch(accountPattern);
 });
 
 test("if account containing customer_id has been fetched", async () => {
