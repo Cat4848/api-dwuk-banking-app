@@ -34,3 +34,13 @@ test("if newly posted transaction is in database", async () => {
   );
   expect(postedTransaction.data).toMatch(postedTransactionPattern);
 });
+
+test("if fetched all transactions from database", async () => {
+  const transactionsDatabase = await createTransactionsDatabase();
+  const result = await transactionsDatabase.fetchAll();
+
+  if (!result.success) {
+    throw result.error;
+  }
+  expect(result.success).toBe(true);
+});
