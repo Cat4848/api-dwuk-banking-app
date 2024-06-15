@@ -55,4 +55,22 @@ export default class AccountsDatabasePersistance {
       await this.connection.end();
     }
   }
+
+  async fetchByCustomerID(customerID: number) {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [account] = await this.connection.execute<AccountRecord[]>(
+        `SELECT * FROM accounts WHERE customer_id = ?;`,
+        [customerID]
+      );
+
+      const success = resultGenerator.generateSuccess(JSON.stringify(account));
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
 }
