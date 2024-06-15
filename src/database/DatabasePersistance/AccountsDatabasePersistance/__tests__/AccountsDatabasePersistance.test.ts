@@ -24,9 +24,9 @@ test("if newly posted account is in database", async () => {
   if (!postedAccount.success) {
     throw postedAccount.error;
   }
-  const matchPattern = new RegExp(`"account_id":${accountID}`, "gi");
-  
-  expect(postedAccount.data).toMatch(matchPattern);
+  const postedAccountPattern = new RegExp(`"account_id":${accountID}`, "gi");
+
+  expect(postedAccount.data).toMatch(postedAccountPattern);
 });
 
 test("if fetched all accounts from database", async () => {
@@ -72,11 +72,16 @@ test("if specific account status changed to FROZEN", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
 
-  const result = await accountsDatabase.freeze(accountID);
+  await accountsDatabase.freeze(accountID);
 
-  if (!result.success) {
-    throw result.error;
+  const accountsDatabaseNewConnection = await createAccountsDatabase();
+  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+  
+  if (!account.success) {
+    throw account.error;
   }
 
-  expect(result.success).toBe(true);
+  const frozenAccountPattern = new RegExp(`"account_id":${accountID}`);
+
+  expect(account.data).toMatch(frozenAccountPattern);
 });
