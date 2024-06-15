@@ -70,7 +70,9 @@ test("if account containing customer_id has been fetched", async () => {
   }
 
   expect(account.success).toBe(true);
-  expect(account.data).toMatch(/"customer_id":59/gi);
+
+  const customerPattern = new RegExp(`"customer_id":${customerID}`, "gi");
+  expect(account.data).toMatch(customerPattern);
 });
 
 test("if specific account status changed to FROZEN", async () => {
