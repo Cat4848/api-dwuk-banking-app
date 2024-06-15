@@ -1,6 +1,6 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator } from "../../lib/ResultGenerator/ResultGenerator";
-import Customer from "../../lib/Customer/Customer";
+import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
+import Customer from "../../../lib/Customer/Customer";
 import CustomerRecord from "./declaration/CustomerRecord";
 
 export default class CustomersDatabasePersistance {

@@ -1,5 +1,5 @@
-import Customer from "../../../lib/Customer/Customer";
-import IDGenerator from "../../../lib/IDGenerator/IDGenerator";
+import Customer from "../../../../lib/Customer/Customer";
+import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
 import createCustomersDatabase from "./helpers/createCustomersDatabase";
 
 test("if a customer has been added successfully to the database", async () => {
