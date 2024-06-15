@@ -51,7 +51,7 @@ test("if specific account has been fetched", async () => {
   expect(account.data).toMatch(/"account_id":6219/gi);
 });
 
-test("if account containing customer_id=59 has been fetched", async () => {
+test("if account containing customer_id has been fetched", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const customerID = 59;
   const account = await accountsDatabase.fetchByCustomerID(customerID);
@@ -64,7 +64,7 @@ test("if account containing customer_id=59 has been fetched", async () => {
   expect(account.data).toMatch(/"customer_id":59/gi);
 });
 
-test("if account_id=6219 status is changed to FROZEN", async () => {
+test("if specific account status changed to FROZEN", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
 
