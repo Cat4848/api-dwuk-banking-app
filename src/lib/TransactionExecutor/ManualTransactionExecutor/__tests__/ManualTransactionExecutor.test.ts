@@ -27,7 +27,7 @@ test("if balance method returns NOT enough balance", async () => {
     fromAccount,
     toAccount
   );
-  const transactionAmount = 500;
+  const transactionAmount = 10000;
   const enoughBalance =
     manualTransactionExecutor.areEnoughFunds(transactionAmount);
 
@@ -68,4 +68,25 @@ test("if toAccount amount is correct after addition", async () => {
   const remainingBalance = manualTransactionExecutor.toAccount.balance;
 
   expect(remainingBalance).toBe(precomputedValue);
+});
+
+test("if transaction executes correctly", async () => {
+  const fromAccount = await fetchAccountByID(fromAccountID);
+  const toAccount = await fetchAccountByID(toAccountID);
+
+  const transactionAmount = 50;
+  const fromAccountPrecomputedValue = fromAccount.balance - transactionAmount;
+  const toAccountPrecomputedValue = toAccount.balance + transactionAmount;
+
+  const manualTransactionExecutor = new ManualTransactionExecutor(
+    fromAccount,
+    toAccount
+  );
+  await manualTransactionExecutor.executeTransaction(transactionAmount);
+
+  const fromAccountBalance = manualTransactionExecutor.fromAccount.balance;
+  const toAccountBalance = manualTransactionExecutor.toAccount.balance;
+
+  expect(fromAccountBalance).toBe(fromAccountPrecomputedValue);
+  expect(toAccountBalance).toBe(toAccountPrecomputedValue);
 });

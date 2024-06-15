@@ -92,16 +92,20 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async putBalance(account: Account) {
+  async putBalance(accounts: Account[]) {
     const resultGenerator = new ResultGenerator();
+    const confirmationList: ResultSetHeader[] = [];
     try {
-      const [confirmation] = await this.connection.execute<ResultSetHeader>(
-        `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
-        [account.balance, account.account_id]
-      );
+      accounts.forEach(async (account) => {
+        const [confirmation] = await this.connection.execute<ResultSetHeader>(
+          `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
+          [account.balance, account.account_id]
+        );
+        confirmationList.push(confirmation);
+      });
 
       const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmation)
+        JSON.stringify(confirmationList)
       );
       return success;
     } catch (e) {

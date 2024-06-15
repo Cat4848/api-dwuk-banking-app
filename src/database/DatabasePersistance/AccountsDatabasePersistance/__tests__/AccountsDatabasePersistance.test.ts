@@ -126,7 +126,7 @@ test("if specific account status changed to ACTIVE", async () => {
 test("if the account balance updates correctly", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
-  const newBalance = 400;
+  const newBalance = 1000;
   const account = new Account({
     account_id: accountID,
     customer_id: 59,
@@ -137,7 +137,7 @@ test("if the account balance updates correctly", async () => {
     balance: newBalance
   });
 
-  await accountsDatabase.putBalance(account);
+  await accountsDatabase.putBalance([account]);
 
   const accountsDatabaseNewConnection = await createAccountsDatabase();
   const updatedAccount =

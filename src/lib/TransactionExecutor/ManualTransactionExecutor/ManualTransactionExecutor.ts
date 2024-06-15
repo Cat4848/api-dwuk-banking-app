@@ -64,8 +64,7 @@ export default class ManualTransactionExecutor implements TransactionExecutor {
 
   async updateAccountsDatabase() {
     const accountsDatabase = await createAccountsDatabase();
-    await accountsDatabase.putBalance(this.#fromAccount);
-    await accountsDatabase.putBalance(this.#toAccount);
+    await accountsDatabase.putBalance([this.#fromAccount, this.#toAccount]);
   }
 
   async updateTransactionsDatabase(amount: number) {
