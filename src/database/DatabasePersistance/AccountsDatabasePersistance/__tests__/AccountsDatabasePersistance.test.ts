@@ -88,7 +88,21 @@ test("if specific account status changed to FROZEN", async () => {
     throw account.error;
   }
 
-  const frozenAccountPattern = new RegExp(`"account_id":${accountID}`, "gi");
+  expect(account.data).toMatch(/"status":"FROZEN"/gi);
+});
 
-  expect(account.data).toMatch(frozenAccountPattern);
+test("if specific account status changed to CLOSED", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accountID = 6219;
+
+  await accountsDatabase.close(accountID);
+
+  const accountsDatabaseNewConnection = await createAccountsDatabase();
+  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+
+  if (!account.success) {
+    throw account.error;
+  }
+
+  expect(account.data).toMatch(/"status":"CLOSED"/gi);
 });
