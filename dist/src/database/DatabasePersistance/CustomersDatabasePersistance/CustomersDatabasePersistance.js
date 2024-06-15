@@ -1,4 +1,4 @@
-import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
+import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator.js";
 export default class CustomersDatabasePersistance {
     connection;
     constructor(connection) {

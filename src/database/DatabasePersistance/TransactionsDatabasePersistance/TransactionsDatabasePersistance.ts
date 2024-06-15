@@ -1,7 +1,7 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
-import Transaction from "../../../lib/Transaction/Transaction";
-import TransactionRecord from "./declaration/TransactionRecord";
+import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator.js";
+import Transaction from "../../../lib/Transaction/Transaction.js";
+import TransactionRecord from "./declaration/TransactionRecord.js";
 
 export default class TransactionsDatabasePersistance {
   private connection;

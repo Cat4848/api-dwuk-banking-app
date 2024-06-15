@@ -1,6 +1,6 @@
-import Account from "../../../../lib/Account/Account";
-import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
-import createAccountsDatabase from "./helpers/createAccountsDatabase";
+import Account from "../../../../lib/Account/Account.js";
+import IDGenerator from "../../../../lib/IDGenerator/IDGenerator.js";
+import createAccountsDatabase from "./helpers/createAccountsDatabase.js";
 
 test("if newly posted account is in database", async () => {
   const accountsDatabase = await createAccountsDatabase();
