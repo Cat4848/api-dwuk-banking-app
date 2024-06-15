@@ -1,7 +1,9 @@
-import Account from "../../Account/Account";
 import Transaction from "../../Transaction/Transaction";
 import createAccountsDatabase from "../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
+import createTransactionsDatabase from "../../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase";
 import IDGenerator from "../../IDGenerator/IDGenerator";
+import officerID from "../../constants/officerID";
+import { ResultGenerator } from "../../ResultGenerator/ResultGenerator";
 export default class ManualTransactionExecutor {
     #fromAccount;
     #toAccount;
@@ -16,21 +18,22 @@ export default class ManualTransactionExecutor {
         return this.#toAccount;
     }
     async executeTransaction(amount) {
-        if (this.areEnoughFunds(amount)) {
-            this.moveFunds(amount);
-            const accountsDatabase = await createAccountsDatabase();
-            await accountsDatabase.putBalance(this.#fromAccount);
-            await accountsDatabase.putBalance(this.#toAccount);
+        const resultGenerator = new ResultGenerator();
+        try {
+            if (this.areEnoughFunds(amount)) {
+                this.moveFunds(amount);
+                await this.updateAccountsDatabase();
+                await this.updateTransactionsDatabase(amount);
+                const success = resultGenerator.generateSuccess("Transaction Executed Successfully.");
+                return success;
+            }
+            else
+                throw new Error("Not enough funds to complete the transaction.");
         }
-        const transaction = new Transaction({
-            transaction_id: IDGenerator.smallIntRandomID(),
-            from_account_id: this.#fromAccount.account_id,
-            to_account_id: this.#toAccount.account_id,
-            officer_id: 5,
-            transaction_date: new Date().toISOString(),
-            amount: amount
-        });
-        return transaction;
+        catch (e) {
+            const error = resultGenerator.generateError(e);
+            return error;
+        }
     }
     areEnoughFunds(transactionAmount) {
         return this.#fromAccount.balance >= transactionAmount;
@@ -47,23 +50,25 @@ export default class ManualTransactionExecutor {
         const newBalance = this.#toAccount.balance + amount;
         this.#toAccount.updateBalance(newBalance);
     }
+    async updateAccountsDatabase() {
+        const accountsDatabase = await createAccountsDatabase();
+        await accountsDatabase.putBalance(this.#fromAccount);
+        await accountsDatabase.putBalance(this.#toAccount);
+    }
+    async updateTransactionsDatabase(amount) {
+        const transactionsDatabase = await createTransactionsDatabase();
+        const transaction = this.createTransaction(amount);
+        transactionsDatabase.post(transaction);
+    }
+    createTransaction(amount) {
+        const transaction = new Transaction({
+            transaction_id: IDGenerator.smallIntRandomID(),
+            from_account_id: this.#fromAccount.account_id,
+            to_account_id: this.#toAccount.account_id,
+            officer_id: officerID,
+            transaction_date: new Date().toISOString(),
+            amount: amount
+        });
+        return transaction;
+    }
 }
-const fromAccount = new Account({
-    account_id: 2,
-    customer_id: 59,
-    officer_id: 1,
-    open_date: new Date().toISOString(),
-    last_activity_date: new Date().toISOString(),
-    status: "ACTIVE",
-    balance: 100
-});
-const toAccount = new Account({
-    account_id: 3,
-    customer_id: 59,
-    officer_id: 1,
-    open_date: new Date().toISOString(),
-    last_activity_date: new Date().toISOString(),
-    status: "ACTIVE",
-    balance: 100
-});
-const transactionExe = new ManualTransactionExecutor(fromAccount, toAccount);

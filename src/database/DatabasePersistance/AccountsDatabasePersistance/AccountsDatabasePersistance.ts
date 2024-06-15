@@ -59,7 +59,7 @@ export default class AccountsDatabasePersistance {
   async fetchByID(accountID: number) {
     const resultGenerator = new ResultGenerator();
     try {
-      const [account] = await this.connection.execute<AccountRecord[]>(
+      const [[account]] = await this.connection.execute<AccountRecord[]>(
         `SELECT * FROM accounts WHERE account_id = ?;`,
         [accountID]
       );

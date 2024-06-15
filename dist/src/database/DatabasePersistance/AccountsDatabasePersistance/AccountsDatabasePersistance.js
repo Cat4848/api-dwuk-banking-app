@@ -46,7 +46,7 @@ export default class AccountsDatabasePersistance {
     async fetchByID(accountID) {
         const resultGenerator = new ResultGenerator();
         try {
-            const [account] = await this.connection.execute(`SELECT * FROM accounts WHERE account_id = ?;`, [accountID]);
+            const [[account]] = await this.connection.execute(`SELECT * FROM accounts WHERE account_id = ?;`, [accountID]);
             const success = resultGenerator.generateSuccess(JSON.stringify(account));
             return success;
         }

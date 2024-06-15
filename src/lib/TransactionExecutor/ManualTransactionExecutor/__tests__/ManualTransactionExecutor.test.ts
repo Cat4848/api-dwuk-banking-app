@@ -1,27 +1,13 @@
 import ManualTransactionExecutor from "../ManualTransactionExecutor";
-import Account from "../../../Account/Account";
+import fetchAccountByID from "./helpers/fetchAccountByID";
 
-const fromAccount = new Account({
-  account_id: 2,
-  customer_id: 59,
-  officer_id: 1,
-  open_date: new Date().toISOString(),
-  last_activity_date: new Date().toISOString(),
-  status: "ACTIVE",
-  balance: 200
-});
-
-const toAccount = new Account({
-  account_id: 3,
-  customer_id: 59,
-  officer_id: 1,
-  open_date: new Date().toISOString(),
-  last_activity_date: new Date().toISOString(),
-  status: "ACTIVE",
-  balance: 100
-});
+const fromAccountID = 6219;
+const toAccountID = 6810;
 
 test("if balance method returns enough balance", async () => {
+  const fromAccount = await fetchAccountByID(fromAccountID);
+  const toAccount = await fetchAccountByID(toAccountID);
+
   const manualTransactionExecutor = new ManualTransactionExecutor(
     fromAccount,
     toAccount
@@ -29,21 +15,29 @@ test("if balance method returns enough balance", async () => {
   const transactionAmount = 50;
   const enoughBalance =
     manualTransactionExecutor.areEnoughFunds(transactionAmount);
+
   expect(enoughBalance).toBeTruthy();
 });
 
 test("if balance method returns NOT enough balance", async () => {
+  const fromAccount = await fetchAccountByID(fromAccountID);
+  const toAccount = await fetchAccountByID(toAccountID);
+
   const manualTransactionExecutor = new ManualTransactionExecutor(
     fromAccount,
     toAccount
   );
-  const transactionAmount = 300;
+  const transactionAmount = 500;
   const enoughBalance =
     manualTransactionExecutor.areEnoughFunds(transactionAmount);
+
   expect(enoughBalance).toBeFalsy();
 });
 
-test("if fromAccount amount is correct after deduction", () => {
+test("if fromAccount amount is correct after deduction", async () => {
+  const fromAccount = await fetchAccountByID(fromAccountID);
+  const toAccount = await fetchAccountByID(toAccountID);
+
   const transactionAmount = 50;
   const precomputedValue = fromAccount.balance - transactionAmount;
 
@@ -58,7 +52,10 @@ test("if fromAccount amount is correct after deduction", () => {
   expect(remainingBalance).toBe(precomputedValue);
 });
 
-test("if toAccount amount is correct after addition", () => {
+test("if toAccount amount is correct after addition", async () => {
+  const fromAccount = await fetchAccountByID(fromAccountID);
+  const toAccount = await fetchAccountByID(toAccountID);
+
   const transactionAmount = 50;
   const precomputedValue = toAccount.balance + transactionAmount;
 
