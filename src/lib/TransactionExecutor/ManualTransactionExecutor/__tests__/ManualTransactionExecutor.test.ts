@@ -1,43 +1,5 @@
-import TransactionExecutor from "../../TransactionExecutor";
+import ManualTransactionExecutor from "../ManualTransactionExecutor";
 import Account from "../../../Account/Account";
-import Transaction from "../../../Transaction/Transaction";
-import createAccountsDatabase from "../../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
-
-export default class ManualTransactionExecutor implements TransactionExecutor {
-  private fromAccount: Account;
-  private toAccount: Account;
-
-  constructor(fromAccount: Account, toAccount: Account) {
-    this.fromAccount = fromAccount;
-    this.toAccount = toAccount;
-  }
-
-  async executeTransaction(amount: number): Transaction {
-    if (this.isEnoughBalance(this.fromAccount.balance, amount)) {
-      this.deduct(amount);
-      this.add(amount);
-
-      const accountsDatabase = await createAccountsDatabase();
-    }
-  }
-
-  isEnoughBalance(
-    fromAccountBalance: number,
-    transactionAmount: number
-  ): boolean {
-    return fromAccountBalance >= transactionAmount;
-  }
-
-  deduct(amount: number): void {
-    const newBalance = this.fromAccount.balance - amount;
-    this.fromAccount.updateBalance(newBalance);
-  }
-
-  add(amount: number): void {
-    const newBalance = this.toAccount.balance + amount;
-    this.toAccount.updateBalance(newBalance);
-  }
-}
 
 const fromAccount = new Account({
   account_id: 2,
@@ -46,7 +8,7 @@ const fromAccount = new Account({
   open_date: new Date().toISOString(),
   last_activity_date: new Date().toISOString(),
   status: "ACTIVE",
-  balance: 100
+  balance: 200
 });
 
 const toAccount = new Account({
@@ -59,5 +21,24 @@ const toAccount = new Account({
   balance: 100
 });
 
-const transactionExe = new ManualTransactionExecutor(fromAccount, toAccount);
-// transactionExe
+test("if balance method returns enough balance", async () => {
+  const manualTransactionExecutor = new ManualTransactionExecutor(
+    fromAccount,
+    toAccount
+  );
+  const transactionBalance = 50;
+  const enoughBalance =
+    manualTransactionExecutor.isEnoughBalance(transactionBalance);
+  expect(enoughBalance).toBeTruthy();
+});
+
+test("if balance method returns NOT enough balance", async () => {
+  const manualTransactionExecutor = new ManualTransactionExecutor(
+    fromAccount,
+    toAccount
+  );
+  const transactionBalance = 300;
+  const enoughBalance =
+    manualTransactionExecutor.isEnoughBalance(transactionBalance);
+  expect(enoughBalance).toBeFalsy();
+});
