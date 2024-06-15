@@ -49,3 +49,16 @@ test("if account containing customer_id=59 has been fetched", async () => {
   expect(account.success).toBe(true);
   expect(account.data).toMatch(/"customer_id":59/gi);
 });
+
+test("if account_id=6219 status is changed to FROZEN", async () => {
+  const accountsDatabase = await createAccountsDatabase();
+  const accountID = 6219;
+
+  const result = await accountsDatabase.freeze(accountID);
+
+  if (!result.success) {
+    throw result.error;
+  }
+
+  expect(result.success).toBe(true);
+});
