@@ -7,9 +7,9 @@ accountsRouter.get("/", async (req, res) => {
         const accountsDatabase = await createAccountsDatabase();
         const accounts = await accountsDatabase.fetchAll();
         if (accounts.success) {
-            // res.set("Access-Control-Allow-Origin", "*");
-            // res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-            // res.set("Access-Control-Allow-Headers", "Content-Type");
+            res.set("Access-Control-Allow-Origin", "*");
+            res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+            res.set("Access-Control-Allow-Headers", "Content-Type");
             return res.json(accounts.data);
         }
         else
