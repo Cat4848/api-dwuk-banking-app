@@ -3,7 +3,6 @@ import createAccountsDatabase from "../../database/DatabasePersistance/AccountsD
 import setHeaders from "../helpers/setHeaders.js";
 const accountsRouter = express();
 accountsRouter.get("/", async (req, res) => {
-    console.log("hit");
     try {
         const accountsDatabase = await createAccountsDatabase();
         const accounts = await accountsDatabase.fetchAll();

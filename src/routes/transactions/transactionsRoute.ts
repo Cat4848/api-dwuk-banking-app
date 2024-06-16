@@ -2,6 +2,8 @@ import express from "express";
 import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase.js";
 import ManualTransactionExecutor from "../../lib/TransactionExecutor/ManualTransactionExecutor/ManualTransactionExecutor.js";
 import createAccountFromAccountRecord from "./helpers/createAccountFromAccountRecord.js";
+import createTransactionsDatabase from "../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase.js";
+import setHeaders from "../helpers/setHeaders.js";
 
 const transactionsRouter = express();
 
@@ -39,6 +41,20 @@ transactionsRouter.post("/executeTransaction", async (req, res) => {
   } catch (e) {
     if (e instanceof Error) return res.status(404).json(e);
   }
+});
+
+transactionsRouter.get("/", async (req, res) => {
+  try {
+    const transactionsDatabase = await createTransactionsDatabase();
+    const transactions = await transactionsDatabase.fetchAll();
+    if (transactions.success) {
+      setHeaders(res);
+      return res.json(transactions.data);
+    } else throw new Error(transactions.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
+  }
+  const accountsDatabase = await createAccountsDatabase();
 });
 
 export default transactionsRouter;
