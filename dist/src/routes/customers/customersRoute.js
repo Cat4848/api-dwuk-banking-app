@@ -3,25 +3,28 @@ import createCustomersDatabase from "../../database/DatabasePersistance/Customer
 import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
 const customersRouter = express();
 customersRouter.get("/", async (req, res) => {
-    console.log("get customers check 1");
-    const customersDatabase = await createCustomersDatabase();
-    const customers = await customersDatabase.fetchAll();
-    if (customers.success) {
-        return res.json(customers.data);
+    try {
+        const customersDatabase = await createCustomersDatabase();
+        const customers = await customersDatabase.fetchAll();
+        if (customers.success)
+            return res.json(customers.data);
+        else
+            throw new Error(customers.error.message);
     }
-    else {
-        return res.status(404).json(customers.error);
+    catch (e) {
+        if (e instanceof Error)
+            return res.status(404).json(e);
     }
 });
 customersRouter.put("/:id", async (req, res) => {
     const customer = createCustomerFromHTTPRequest(req);
     try {
         const customersDatabase = await createCustomersDatabase();
-        const result = await customersDatabase.put(customer);
-        if (result.success)
-            return res.json(result.data);
+        const putResult = await customersDatabase.put(customer);
+        if (putResult.success)
+            return res.json(putResult.data);
         else
-            throw new Error(result.error.message);
+            throw new Error(putResult.error.message);
     }
     catch (e) {
         if (e instanceof Error)
@@ -32,11 +35,11 @@ customersRouter.post("/", async (req, res) => {
     const customer = createCustomerFromHTTPRequest(req);
     try {
         const customersDatabase = await createCustomersDatabase();
-        const result = await customersDatabase.post(customer);
-        if (result.success)
-            return res.json(result.data);
+        const postResult = await customersDatabase.post(customer);
+        if (postResult.success)
+            return res.json(postResult.data);
         else
-            throw new Error(result.error.message);
+            throw new Error(postResult.error.message);
     }
     catch (e) {
         if (e instanceof Error)
@@ -47,11 +50,11 @@ customersRouter.delete("/:id", async (req, res) => {
     const customerID = Number(req.params.id);
     try {
         const customersDatabase = await createCustomersDatabase();
-        const result = await customersDatabase.delete(customerID);
-        if (result.success)
-            return res.json(result.data);
+        const deleteResult = await customersDatabase.delete(customerID);
+        if (deleteResult.success)
+            return res.json(deleteResult.data);
         else
-            throw new Error(result.error.message);
+            throw new Error(deleteResult.error.message);
     }
     catch (e) {
         if (e instanceof Error)

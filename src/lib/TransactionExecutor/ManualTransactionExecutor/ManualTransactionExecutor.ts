@@ -1,11 +1,14 @@
-import TransactionExecutor from "../TransactionExecutor";
-import Account from "../../Account/Account";
-import Transaction from "../../Transaction/Transaction";
-import createAccountsDatabase from "../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
-import createTransactionsDatabase from "../../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase";
-import IDGenerator from "../../IDGenerator/IDGenerator";
-import officerID from "../../constants/officerID";
-import { ResultGenerator, Result } from "../../ResultGenerator/ResultGenerator";
+import TransactionExecutor from "../TransactionExecutor.js";
+import Account from "../../Account/Account.js";
+import Transaction from "../../Transaction/Transaction.js";
+import createAccountsDatabase from "../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase.js";
+import createTransactionsDatabase from "../../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase.js";
+import IDGenerator from "../../IDGenerator/IDGenerator.js";
+import officerID from "../../constants/officerID.js";
+import {
+  ResultGenerator,
+  Result
+} from "../../ResultGenerator/ResultGenerator.js";
 
 export default class ManualTransactionExecutor implements TransactionExecutor {
   #fromAccount: Account;
