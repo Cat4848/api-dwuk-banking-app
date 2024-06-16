@@ -18,17 +18,14 @@ customersRouter.put("/:id", async (req, res) => {
     try {
         const customersDatabase = await createCustomersDatabase();
         const result = await customersDatabase.put(customer);
-        if (result.success) {
+        if (result.success)
             return res.json(result.data);
-        }
-        else {
+        else
             throw new Error(result.error.message);
-        }
     }
     catch (e) {
-        if (e instanceof Error) {
+        if (e instanceof Error)
             return res.status(404).json(e);
-        }
     }
 });
 customersRouter.post("/", async (req, res) => {
