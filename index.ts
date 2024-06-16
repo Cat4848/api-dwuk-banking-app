@@ -14,8 +14,7 @@ middleware.initAuth();
 
 app.use(
   cors({
-    origin: true,
-    credentials: true
+    origin: [/\.herokuapp\.com$/, "http://locahost:3000"]
   })
 );
 
