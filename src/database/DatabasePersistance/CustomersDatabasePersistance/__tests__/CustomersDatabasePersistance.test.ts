@@ -1,6 +1,6 @@
-import Customer from "../../../../lib/Customer/Customer";
-import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
-import createCustomersDatabase from "./helpers/createCustomersDatabase";
+import Customer from "../../../../lib/Customer/Customer.js";
+import IDGenerator from "../../../../lib/IDGenerator/IDGenerator.js";
+import createCustomersDatabase from "./helpers/createCustomersDatabase.js";
 
 test("if a customer has been added successfully to the database", async () => {
   const customersDatabase = await createCustomersDatabase();

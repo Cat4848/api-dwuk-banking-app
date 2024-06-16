@@ -1,7 +1,7 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
-import Customer from "../../../lib/Customer/Customer";
-import CustomerRecord from "./declaration/CustomerRecord";
+import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator.js";
+import Customer from "../../../lib/Customer/Customer.js";
+import CustomerRecord from "./declaration/CustomerRecord.js";
 
 export default class CustomersDatabasePersistance {
   private connection;

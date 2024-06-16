@@ -1,6 +1,6 @@
 import express from "express";
-import authRouter from "./src/routes/auth/index.js";
 import MiddlewareInitializer from "./app.config.js";
+import customersRouter from "./src/routes/customers/customersRoute.js";
 
 const app = express();
 
@@ -9,6 +9,6 @@ middleware.initHTTPBodyParsers();
 middleware.initSession();
 middleware.initAuth();
 
-app.use("/", authRouter);
+app.use("/customers", customersRouter);
 
 app.listen(process.env.PORT || 4000);

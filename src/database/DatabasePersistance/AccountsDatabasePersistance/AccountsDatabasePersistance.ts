@@ -1,7 +1,7 @@
 import mysql, { ResultSetHeader } from "mysql2/promise";
-import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
-import Account from "../../../lib/Account/Account";
-import AccountRecord from "./declaration/AccountRecord";
+import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator.js";
+import Account from "../../../lib/Account/Account.js";
+import AccountRecord from "./declaration/AccountRecord.js";
 
 export default class AccountsDatabasePersistance {
   private connection;

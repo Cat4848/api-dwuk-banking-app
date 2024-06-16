@@ -1,6 +1,6 @@
-import Transaction from "../../../../lib/Transaction/Transaction";
-import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
-import createTransactionsDatabase from "./helpers/createTransactionsDatabase";
+import Transaction from "../../../../lib/Transaction/Transaction.js";
+import IDGenerator from "../../../../lib/IDGenerator/IDGenerator.js";
+import createTransactionsDatabase from "./helpers/createTransactionsDatabase.js";
 
 test("if newly posted transaction is in database", async () => {
   const transactionsDatabase = await createTransactionsDatabase();
