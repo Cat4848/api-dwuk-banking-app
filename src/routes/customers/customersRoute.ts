@@ -1,6 +1,7 @@
 import express from "express";
 import createCustomersDatabase from "../../database/DatabasePersistance/CustomersDatabasePersistance/__tests__/helpers/createCustomersDatabase.js";
 import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
+import setHeaders from "../helpers/setHeaders.js";
 
 const customersRouter = express();
 
@@ -8,8 +9,10 @@ customersRouter.get("/", async (req, res) => {
   try {
     const customersDatabase = await createCustomersDatabase();
     const customers = await customersDatabase.fetchAll();
-    if (customers.success) return res.json(customers.data);
-    else throw new Error(customers.error.message);
+    if (customers.success) {
+      setHeaders(res);
+      return res.json(customers.data);
+    } else throw new Error(customers.error.message);
   } catch (e) {
     if (e instanceof Error) return res.status(404).json(e);
   }
