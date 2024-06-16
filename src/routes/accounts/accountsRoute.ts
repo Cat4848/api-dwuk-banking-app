@@ -11,9 +11,6 @@ accountsRouter.get("/", async (req, res) => {
     const accounts = await accountsDatabase.fetchAll();
     if (accounts.success) {
       setHeaders(res);
-      // res.set("Access-Control-Allow-Origin", "*");
-      // res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-      // res.set("Access-Control-Allow-Headers", "Content-Type");
       return res.json(accounts.data);
     } else throw new Error(accounts.error.message);
   } catch (e) {
