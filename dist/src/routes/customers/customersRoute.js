@@ -31,4 +31,19 @@ customersRouter.put("/:id", async (req, res) => {
         }
     }
 });
+customersRouter.post("/", async (req, res) => {
+    const customer = createCustomerFromHTTPRequest(req);
+    try {
+        const customersDatabase = await createCustomersDatabase();
+        const result = await customersDatabase.post(customer);
+        if (result.success)
+            return res.json(result.data);
+        else
+            throw new Error(result.error.message);
+    }
+    catch (e) {
+        if (e instanceof Error)
+            return res.status(404).json(e);
+    }
+});
 export default customersRouter;
