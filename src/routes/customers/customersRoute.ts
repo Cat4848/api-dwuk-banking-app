@@ -39,4 +39,16 @@ customersRouter.post("/", async (req, res) => {
   }
 });
 
+customersRouter.delete("/:id", async (req, res) => {
+  const customerID = Number(req.params.id);
+  try {
+    const customersDatabase = await createCustomersDatabase();
+    const result = await customersDatabase.delete(customerID);
+    if (result.success) return res.json(result.data);
+    else throw new Error(result.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
+  }
+});
+
 export default customersRouter;
