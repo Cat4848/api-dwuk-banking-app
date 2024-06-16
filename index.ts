@@ -26,7 +26,6 @@ app.use(
     origin: "https://api-dwuk-banking-app-2c5a96dde0e1.herokuapp.com"
   })
 );
-
 app.use("/customers", customersRouter);
 app.use("/accounts", accountsRouter);
 app.use("/transactions", transactionsRouter);
