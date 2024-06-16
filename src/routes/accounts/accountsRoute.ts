@@ -38,4 +38,16 @@ accountsRouter.put("/close/:id", async (req, res) => {
   }
 });
 
+accountsRouter.put("/activate/:id", async (req, res) => {
+  const accountID = Number(req.params.id);
+  try {
+    const accountsDatabase = await createAccountsDatabase();
+    const activateResult = await accountsDatabase.activate(accountID);
+    if (activateResult.success) return res.json(activateResult.data);
+    else throw new Error(activateResult.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
+  }
+});
+
 export default accountsRouter;
