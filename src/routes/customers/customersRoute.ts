@@ -1,7 +1,6 @@
 import express from "express";
 import createCustomersDatabase from "../../database/DatabasePersistance/CustomersDatabasePersistance/__tests__/helpers/createCustomersDatabase.js";
-import Customer from "../../lib/Customer/Customer.js";
-import officerID from "../../lib/constants/officerID.js";
+import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
 
 const customersRouter = express();
 
@@ -17,14 +16,7 @@ customersRouter.get("/", async (req, res) => {
 });
 
 customersRouter.put("/:id", async (req, res) => {
-  const customerFromFrontEnd: Customer = req.body;
-  const customer = new Customer({
-    customer_id: Number(req.params.id),
-    officer_id: officerID,
-    first_name: customerFromFrontEnd.first_name,
-    last_name: customerFromFrontEnd.last_name,
-    email: customerFromFrontEnd.email
-  });
+  const customer = createCustomerFromHTTPRequest(req);
   try {
     const customersDatabase = await createCustomersDatabase();
     const result = await customersDatabase.put(customer);
