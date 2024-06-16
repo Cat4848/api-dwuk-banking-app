@@ -4,11 +4,16 @@ import createAccountsDatabase from "../../database/DatabasePersistance/AccountsD
 const accountsRouter = express();
 
 accountsRouter.get("/", async (req, res) => {
+  console.log("hit");
   try {
     const accountsDatabase = await createAccountsDatabase();
     const accounts = await accountsDatabase.fetchAll();
-    if (accounts.success) return res.json(accounts.data);
-    else throw new Error(accounts.error.message);
+    if (accounts.success) {
+      res.set("Access-Control-Allow-Origin", "*");
+      res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+      res.set("Access-Control-Allow-Headers", "Content-Type");
+      return res.json(accounts.data);
+    } else throw new Error(accounts.error.message);
   } catch (e) {
     if (e instanceof Error) return res.status(404).json(e);
   }
