@@ -26,4 +26,16 @@ accountsRouter.put("/freeze/:id", async (req, res) => {
   }
 });
 
+accountsRouter.put("/close/:id", async (req, res) => {
+  const accountID = Number(req.params.id);
+  try {
+    const accountsDatabase = await createAccountsDatabase();
+    const closeResult = await accountsDatabase.close(accountID);
+    if (closeResult.success) return res.json(closeResult.data);
+    else throw new Error(closeResult.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
+  }
+});
+
 export default accountsRouter;
