@@ -3,13 +3,17 @@ import createCustomersDatabase from "../../database/DatabasePersistance/Customer
 import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
 const customersRouter = express();
 customersRouter.get("/", async (req, res) => {
-    const customersDatabase = await createCustomersDatabase();
-    const customers = await customersDatabase.fetchAll();
-    if (customers.success) {
-        return res.json(customers.data);
+    try {
+        const customersDatabase = await createCustomersDatabase();
+        const customers = await customersDatabase.fetchAll();
+        if (customers.success)
+            return res.json(customers.data);
+        else
+            throw new Error(customers.error.message);
     }
-    else {
-        return res.status(404).json(customers.error);
+    catch (e) {
+        if (e instanceof Error)
+            return res.status(404).json(e);
     }
 });
 customersRouter.put("/:id", async (req, res) => {

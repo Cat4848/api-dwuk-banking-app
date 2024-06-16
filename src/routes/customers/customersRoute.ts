@@ -5,12 +5,13 @@ import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPReque
 const customersRouter = express();
 
 customersRouter.get("/", async (req, res) => {
-  const customersDatabase = await createCustomersDatabase();
-  const customers = await customersDatabase.fetchAll();
-  if (customers.success) {
-    return res.json(customers.data);
-  } else {
-    return res.status(404).json(customers.error);
+  try {
+    const customersDatabase = await createCustomersDatabase();
+    const customers = await customersDatabase.fetchAll();
+    if (customers.success) return res.json(customers.data);
+    else throw new Error(customers.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
   }
 });
 

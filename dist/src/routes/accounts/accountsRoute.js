@@ -4,11 +4,11 @@ const accountsRouter = express();
 accountsRouter.get("/", async (req, res) => {
     try {
         const accountsDatabase = await createAccountsDatabase();
-        const result = await accountsDatabase.fetchAll();
-        if (result.success)
-            return res.json(result.data);
+        const accounts = await accountsDatabase.fetchAll();
+        if (accounts.success)
+            return res.json(accounts.data);
         else
-            throw new Error(result.error.message);
+            throw new Error(accounts.error.message);
     }
     catch (e) {
         if (e instanceof Error)
