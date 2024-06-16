@@ -7,6 +7,6 @@ export default interface AccountRecord extends RowDataPacket {
   open_date: string;
   close_date?: string;
   last_activity_date: string;
-  status: number;
+  status: "ACTIVE" | "CLOSED" | "FROZEN";
   balance: number;
 }
