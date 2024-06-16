@@ -3,7 +3,6 @@ import createCustomersDatabase from "../../database/DatabasePersistance/Customer
 import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
 const customersRouter = express();
 customersRouter.get("/", async (req, res) => {
-    console.log("get customers check 1");
     const customersDatabase = await createCustomersDatabase();
     const customers = await customersDatabase.fetchAll();
     if (customers.success) {
