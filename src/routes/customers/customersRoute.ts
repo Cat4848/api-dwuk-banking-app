@@ -35,8 +35,10 @@ customersRouter.post("/", async (req, res) => {
   try {
     const customersDatabase = await createCustomersDatabase();
     const postResult = await customersDatabase.post(customer);
-    if (postResult.success) return res.json(postResult.data);
-    else throw new Error(postResult.error.message);
+    if (postResult.success) {
+      setHeaders(res);
+      return res.json(postResult.data);
+    } else throw new Error(postResult.error.message);
   } catch (e) {
     if (e instanceof Error) return res.status(404).json(e);
   }
