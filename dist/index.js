@@ -1,9 +1,12 @@
 import express from "express";
+import cors from "cors";
 import MiddlewareInitializer from "./app.config.js";
 import customersRouter from "./src/routes/customers/customersRoute.js";
 import accountsRouter from "./src/routes/accounts/accountsRoute.js";
 import transactionsRouter from "./src/routes/transactions/transactionsRoute.js";
 const app = express();
+app.use(cors());
+app.options("*", cors());
 const middleware = new MiddlewareInitializer(app);
 middleware.initHTTPBodyParsers();
 middleware.initSession();

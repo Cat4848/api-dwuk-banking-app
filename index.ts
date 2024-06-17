@@ -7,6 +7,9 @@ import transactionsRouter from "./src/routes/transactions/transactionsRoute.js";
 
 const app = express();
 
+app.use(cors());
+app.options("*", cors());
+
 const middleware = new MiddlewareInitializer(app);
 middleware.initHTTPBodyParsers();
 middleware.initSession();
