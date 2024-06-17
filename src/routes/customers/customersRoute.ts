@@ -19,20 +19,6 @@ customersRouter.get("/", async (req, res) => {
   }
 });
 
-customersRouter.get("/:id", async (req, res) => {
-  const customerID = Number(req.params.id);
-  try {
-    const accountsDatabase = await createAccountsDatabase();
-    const account = await accountsDatabase.fetchByCustomerID(customerID);
-    if (account.success) {
-      setHeaders(res);
-      return res.json(account.data);
-    } else throw new Error(account.error.message);
-  } catch (e) {
-    if (e instanceof Error) return res.status(404).json(e);
-  }
-});
-
 customersRouter.put("/:id", async (req, res) => {
   const customer = createCustomerFromHTTPRequest(req);
   try {
