@@ -18,6 +18,23 @@ accountsRouter.get("/", async (req, res) => {
             return res.status(404).json(e);
     }
 });
+accountsRouter.get("/:id", async (req, res) => {
+    const customerID = Number(req.params.id);
+    try {
+        const accountsDatabase = await createAccountsDatabase();
+        const account = await accountsDatabase.fetchByCustomerID(customerID);
+        if (account.success) {
+            setHeaders(res);
+            return res.json(account.data);
+        }
+        else
+            throw new Error(account.error.message);
+    }
+    catch (e) {
+        if (e instanceof Error)
+            return res.status(404).json(e);
+    }
+});
 accountsRouter.put("/freeze/:id", async (req, res) => {
     const accountID = Number(req.params.id);
     try {
