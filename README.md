@@ -1,22 +1,43 @@
-# DWUK Banking Application - Web API
+# DWUK Banking Web Application
 
-## Introduction
+## Backend (API) Module
 
-This is the Web API for the DWUK Banking Application.
+The DWUK Banking App is divided into 2 repositories:
 
-Every bank needs to keep track and manage its accounts.
+- the current documentation is for the _Backend Module_ and
+- [this is the frontend module](https://github.com/Cat4848/client-dwuk-banking-app)
 
-The DWUK Banking Application enhances cashier performance by ensuring fast and reliable service, transforming customer visits into pleasant experiences.
+## Live Deployment
+
+I deployed the app on _Vercel_ and it's fully connected to the backend for a seamless experience.
+
+Please have a look at the [live link here](https://client-dwuk-banking-app.vercel.app/).
 
 ## Technologies Used
 
-- **NodeJS:** an asynchronous JavaScript runtime environment. Widely used for building web servers
-- **ExpressJS:** a `NodeJS` framework great for web APIs
-- **TypeScript:** _same as on frontend above_
-- **MySQL:** relational database; a good choice for interdependent data like in the case of our DWUK Banking Application
+- **NodeJS:** a popular and asynchronous JavaScript runtime environment
+- **ExpressJS:** a `NodeJS` framework – great for web APIs
+- **TypeScript:** I love safety – A superset of JavaScript, selected for its ability to augment project safety. By introducing static typing, TypeScript furnishes me with a shield against runtime errors. Although it may demand additional development time, I view this investment as integral to ensuring the reliability and stability of my software.
+- **MySQL:** relational database; a good choice for interdependent data like the data tree of our DWUK Banking Application.
 
-## How to Install and Run the Project Locally
+## Getting Started
 
-> **Note:** When running the app locally, you need to add the `JAWSDB_URL` to the environment variables list. Please ask the system administrator for the `JAWSDB_URL` database connection link.
+To run the project locally, please execute the following command in a terminal:
 
-## Features Overview
+`git clone https://github.com/Cat4848/api-dwuk-banking-app`
+
+Then, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+### Enjoy
+
+Created with ❤️ in Kent, UK.
