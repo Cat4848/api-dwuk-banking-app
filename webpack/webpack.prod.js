@@ -1,1 +1,1 @@
-const {merge} = require('web')
+const {merge} = require('webpack-merge');

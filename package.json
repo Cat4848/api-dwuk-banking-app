@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CRUD Web Server for the DWUK Banking Application",
   "private": "true",
+  "main": "./dist/bundle.js",
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "nodemon -r dotenv/config dist/index.js",
