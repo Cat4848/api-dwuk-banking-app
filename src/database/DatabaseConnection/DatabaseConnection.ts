@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise";
-import JAWSDB_URL from "../../../env.js";
+import JAWSDB_URL from "../../../env";
 
 export default class DatabaseConnection {
   public static async createConnection() {

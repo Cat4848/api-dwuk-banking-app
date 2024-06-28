@@ -1,0 +1,1 @@
+const {merge} = require('web')

@@ -1,8 +1,7 @@
 import express from "express";
-import createCustomersDatabase from "../../database/DatabasePersistance/CustomersDatabasePersistance/__tests__/helpers/createCustomersDatabase.js";
-import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase.js";
-import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest.js";
-import setHeaders from "../helpers/setHeaders.js";
+import createCustomersDatabase from "../../database/DatabasePersistance/CustomersDatabasePersistance/__tests__/helpers/createCustomersDatabase";
+import createCustomerFromHTTPRequest from "./helpers/createCustomerFromHTTPRequest";
+import setHeaders from "../helpers/setHeaders";
 
 const customersRouter = express();
 

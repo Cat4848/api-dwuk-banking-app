@@ -1,6 +1,6 @@
-import Account from "../../../lib/Account/Account.js";
-import officerID from "../../../lib/constants/officerID.js";
-import AccountRecord from "../../../database/DatabasePersistance/AccountsDatabasePersistance/declaration/AccountRecord.js";
+import Account from "../../../lib/Account/Account";
+import officerID from "../../../lib/constants/officerID";
+import AccountRecord from "../../../database/DatabasePersistance/AccountsDatabasePersistance/declaration/AccountRecord";
 
 export default async function createAccountFromAccountRecord(
   accountString: string
