@@ -5,12 +5,14 @@
   "private": "true",
   "main": "./dist/bundle.js",
   "scripts": {
-    "start": "node ./dist/index.js",
-    "dev": "nodemon -r dotenv/config dist/index.js",
+    "build": "webpack --config webpack/webpack.prod.js",
+    "build:dev": "webpack --config webpack/webpack.dev.js",
+    "start": "node ./dist/bundle.js",
+    "heroku-postbuild": "npm run build",
+    "test": "jest --watch --coverage --detectOpenHandles",
+    "dev": "nodemon -r dotenv/config dist/bundle.js",
     "lint": "npx eslint .",
-    "build:watch": "tsc -w -p tsconfig.build.json",
-    "build:webpack": "webpack",
-    "test": "jest --watch --coverage --detectOpenHandles"
+    "build:watch": "tsc -w -p tsconfig.build.json"
   },
   "keywords": [],
   "author": "Catalin Pirtiu: catalinrol@gmail.com",
