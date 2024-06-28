@@ -1,6 +1,6 @@
 import express from "express";
-import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase.js";
-import setHeaders from "../helpers/setHeaders.js";
+import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
+import setHeaders from "../helpers/setHeaders";
 
 const accountsRouter = express();
 

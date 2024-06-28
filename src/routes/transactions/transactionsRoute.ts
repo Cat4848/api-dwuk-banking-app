@@ -1,9 +1,9 @@
 import express from "express";
-import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase.js";
-import ManualTransactionExecutor from "../../lib/TransactionExecutor/ManualTransactionExecutor/ManualTransactionExecutor.js";
-import createAccountFromAccountRecord from "./helpers/createAccountFromAccountRecord.js";
-import createTransactionsDatabase from "../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase.js";
-import setHeaders from "../helpers/setHeaders.js";
+import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
+import ManualTransactionExecutor from "../../lib/TransactionExecutor/ManualTransactionExecutor/ManualTransactionExecutor";
+import createAccountFromAccountRecord from "./helpers/createAccountFromAccountRecord";
+import createTransactionsDatabase from "../../database/DatabasePersistance/TransactionsDatabasePersistance/__tests__/helpers/createTransactionsDatabase";
+import setHeaders from "../helpers/setHeaders";
 
 const transactionsRouter = express();
 

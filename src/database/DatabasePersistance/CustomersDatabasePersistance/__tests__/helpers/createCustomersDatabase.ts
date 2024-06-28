@@ -1,5 +1,5 @@
-import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnection.js";
-import CustomersDatabasePersistance from "../../CustomersDatabasePersistance.js";
+import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnection";
+import CustomersDatabasePersistance from "../../CustomersDatabasePersistance";
 
 export default async function createCustomersDatabase() {
   const connection = await DatabaseConnection.createConnection();

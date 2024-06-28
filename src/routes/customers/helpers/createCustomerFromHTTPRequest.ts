@@ -1,7 +1,7 @@
 import { Request } from "express";
-import Customer from "../../../lib/Customer/Customer.js";
-import officerID from "../../../lib/constants/officerID.js";
-import IDGenerator from "../../../lib/IDGenerator/IDGenerator.js";
+import Customer from "../../../lib/Customer/Customer";
+import officerID from "../../../lib/constants/officerID";
+import IDGenerator from "../../../lib/IDGenerator/IDGenerator";
 
 export default function createCustomerFromHTTPRequest(req: Request): Customer {
   const customerFromFrontEnd: Customer = req.body;
