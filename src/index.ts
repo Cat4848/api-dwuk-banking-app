@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import MiddlewareInitializer from "./app.config";
-import customersRouter from "./src/routes/customers/customersRoute";
-import accountsRouter from "./src/routes/accounts/accountsRoute";
-import transactionsRouter from "./src/routes/transactions/transactionsRoute";
+import customersRouter from "./routes/customers/customersRoute";
+import accountsRouter from "./routes/accounts/accountsRoute";
+import transactionsRouter from "./routes/transactions/transactionsRoute";
 
 const app = express();
 
