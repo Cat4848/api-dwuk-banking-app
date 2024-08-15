@@ -1,5 +1,7 @@
 import express, { Express } from "express";
-import session from "express-session";
+import expressSession from "express-session";
+import { SessionOptions } from "express-session";
+import MongoStore from "connect-mongo";
 
 export default class MiddlewareInitializer {
   constructor(app: Express) {
@@ -13,20 +15,16 @@ export default class MiddlewareInitializer {
   }
 
   initSession() {
-    this.app.use(session(this.createSessionOptions(this.app)));
+    this.app.use(expressSession(this.createSessionOptions(this.app)));
   }
 
-  private createSessionOptions(app: Express) {
-    const sessionOptions = {
+  private createSessionOptions(app: Express): SessionOptions {
+    const sessionOptions: SessionOptions = {
       secret: process.env.SESSION_SECRET || [""],
+      store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
       resave: true,
-      saveUninitialized: true,
-      cookie: { secure: false }
+      saveUninitialized: true
     };
-
-    if (app.get("env") === "production") {
-      sessionOptions.cookie.secure = true;
-    }
 
     return sessionOptions;
   }

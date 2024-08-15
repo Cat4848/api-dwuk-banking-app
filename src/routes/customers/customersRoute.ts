@@ -32,7 +32,6 @@ customersRouter.put("/:id", async (req, res) => {
 
 customersRouter.post("/", async (req, res) => {
   const customer = createCustomerFromHTTPRequest(req);
-  console.log("BE -> post customer", customer);
   try {
     const customersDatabase = await createCustomersDatabase();
     const postResult = await customersDatabase.post(customer);
