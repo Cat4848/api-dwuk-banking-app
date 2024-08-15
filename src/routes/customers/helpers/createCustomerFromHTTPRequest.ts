@@ -10,7 +10,8 @@ export default function createCustomerFromHTTPRequest(req: Request): Customer {
     officer_id: officerID,
     first_name: customerFromFrontEnd.first_name,
     last_name: customerFromFrontEnd.last_name,
-    email: customerFromFrontEnd.email
+    email: customerFromFrontEnd.email,
+    created_at: new Date().toISOString()
   });
   return customer;
 }

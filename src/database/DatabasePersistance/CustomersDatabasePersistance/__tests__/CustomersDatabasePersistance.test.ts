@@ -10,7 +10,8 @@ test("if a customer has been added successfully to the database", async () => {
     officer_id: 1,
     first_name: "Jane",
     last_name: "Smith",
-    email: "jane.smith@gmail.com"
+    email: "jane.smith@gmail.com",
+    created_at: new Date().toISOString()
   });
 
   const result = await customersDatabase.post(customer);
@@ -41,7 +42,8 @@ test("if the database customer record is updated successfully", async () => {
     officer_id: 1,
     first_name: "James",
     last_name: "Black",
-    email: "jane.black@gmail.com"
+    email: "jane.black@gmail.com",
+    created_at: new Date().toISOString()
   });
   const result = await customersDatabase.put(customer);
 

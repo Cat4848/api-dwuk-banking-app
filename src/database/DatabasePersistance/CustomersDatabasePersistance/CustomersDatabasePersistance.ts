@@ -14,13 +14,14 @@ export default class CustomersDatabasePersistance {
     const resultGenerator = new ResultGenerator();
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
-        `INSERT INTO customers VALUES (?, ?, ?, ?, ?);`,
+        `INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?);`,
         [
           customer.customer_id,
           customer.officer_id,
           customer.first_name,
           customer.last_name,
-          customer.email
+          customer.email,
+          customer.created_at
         ]
       );
 
@@ -40,7 +41,7 @@ export default class CustomersDatabasePersistance {
     const resultGenerator = new ResultGenerator();
     try {
       const [customers] = await this.connection.execute<CustomerRecord[]>(
-        `SELECT * FROM customers;`
+        `SELECT * FROM customers ORDER BY created_at DESC;`
       );
 
       const success = resultGenerator.generateSuccess(

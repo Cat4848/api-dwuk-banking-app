@@ -4,6 +4,7 @@ interface CustomerProps {
   first_name: string;
   last_name: string;
   email: string;
+  created_at: string;
 }
 
 export default class Customer implements CustomerProps {
@@ -12,19 +13,22 @@ export default class Customer implements CustomerProps {
   #first_name: string;
   #last_name: string;
   #email: string;
+  #created_at: string;
 
   constructor({
     customer_id,
     officer_id,
     first_name,
     last_name,
-    email
+    email,
+    created_at
   }: CustomerProps) {
     this.#customer_id = customer_id;
     this.#officer_id = officer_id;
     this.#first_name = first_name;
     this.#last_name = last_name;
     this.#email = email;
+    this.#created_at = created_at;
   }
 
   get customer_id() {
@@ -45,5 +49,9 @@ export default class Customer implements CustomerProps {
 
   get email() {
     return this.#email;
+  }
+
+  get created_at() {
+    return this.#created_at;
   }
 }

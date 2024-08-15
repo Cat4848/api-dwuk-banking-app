@@ -21,6 +21,7 @@ export default class CustomersTableAdminPersistance
           first_name VARCHAR(255) NOT NULL,
           last_name VARCHAR(255) NOT NULL,
           email VARCHAR(255) NOT NULL,
+          created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           PRIMARY KEY (customer_id),
           FOREIGN KEY (officer_id) REFERENCES officers(officer_id)
         );`
