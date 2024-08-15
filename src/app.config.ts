@@ -29,3 +29,4 @@ export default class MiddlewareInitializer {
     return sessionOptions;
   }
 }
+// created local session storage db
