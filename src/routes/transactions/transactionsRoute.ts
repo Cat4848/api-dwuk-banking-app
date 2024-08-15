@@ -8,8 +8,8 @@ import setHeaders from "../helpers/setHeaders";
 const transactionsRouter = express();
 
 transactionsRouter.post("/executeTransaction", async (req, res) => {
-  const fromAccountID = Number(req.body.fromAccountID) as number;
-  const toAccountID = Number(req.body.toAccountID) as number;
+  const fromAccountID = Number(req.body.from_customer) as number;
+  const toAccountID = Number(req.body.to_customer) as number;
   const amount = Number(req.body.amount) as number;
   console.log("executeTransaction -> fromAccountID", fromAccountID);
   console.log("executeTransaction -> toAccountID", toAccountID);
