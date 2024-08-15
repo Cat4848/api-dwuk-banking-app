@@ -13,7 +13,6 @@ app.options("*", cors());
 const middleware = new MiddlewareInitializer(app);
 middleware.initHTTPBodyParsers();
 middleware.initSession();
-middleware.initAuth();
 
 app.use("/customers", customersRouter);
 app.use("/accounts", accountsRouter);

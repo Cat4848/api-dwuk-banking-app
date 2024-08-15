@@ -8,9 +8,10 @@ test("if customer instance created successfully", () => {
     officer_id: IDGenerator.smallIntRandomID(),
     first_name: "Jane",
     last_name: "Smith",
-    email: "jane.smith@gmail.com"
+    email: "jane.smith@gmail.com",
+    created_at: new Date().toISOString()
   });
-  
+
   expect(customer).toHaveProperty("first_name");
   expect(customer).not.toHaveProperty("flour");
   expect(customer.customer_id).toBe(customerID);
