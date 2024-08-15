@@ -1,6 +1,5 @@
 import express, { Express } from "express";
 import session from "express-session";
-import passport from "passport";
 
 export default class MiddlewareInitializer {
   constructor(app: Express) {
@@ -30,10 +29,5 @@ export default class MiddlewareInitializer {
     }
 
     return sessionOptions;
-  }
-
-  initAuth() {
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
   }
 }
