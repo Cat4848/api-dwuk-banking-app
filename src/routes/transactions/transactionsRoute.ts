@@ -11,6 +11,9 @@ transactionsRouter.post("/executeTransaction", async (req, res) => {
   const fromAccountID = Number(req.body.fromAccountID) as number;
   const toAccountID = Number(req.body.toAccountID) as number;
   const amount = Number(req.body.amount) as number;
+  console.log("executeTransaction -> fromAccountID", fromAccountID);
+  console.log("executeTransaction -> toAccountID", toAccountID);
+  console.log("executeTransaction -> amount", amount);
   try {
     const accountsDatabase = await createAccountsDatabase();
     const fromAccountResult = await accountsDatabase.fetchByID(fromAccountID);
