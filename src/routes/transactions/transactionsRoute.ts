@@ -8,8 +8,8 @@ import setHeaders from "../helpers/setHeaders";
 const transactionsRouter = express();
 
 transactionsRouter.post("/executeTransaction", async (req, res) => {
-  const fromAccountID = Number(req.body.from_customer) as number;
-  const toAccountID = Number(req.body.to_customer) as number;
+  const fromAccountID = Number(req.body.from_customer_id) as number;
+  const toAccountID = Number(req.body.to_customer_id) as number;
   const amount = Number(req.body.amount) as number;
   try {
     const accountsDatabase = await createAccountsDatabase();
