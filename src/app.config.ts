@@ -1,7 +1,6 @@
 import express, { Express } from "express";
 import expressSession from "express-session";
 import { SessionOptions } from "express-session";
-import MongoStore from "connect-mongo";
 
 export default class MiddlewareInitializer {
   constructor(app: Express) {
@@ -21,7 +20,6 @@ export default class MiddlewareInitializer {
   private createSessionOptions(app: Express): SessionOptions {
     const sessionOptions: SessionOptions = {
       secret: process.env.SESSION_SECRET || [""],
-      store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
       resave: true,
       saveUninitialized: true
     };
