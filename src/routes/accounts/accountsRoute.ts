@@ -17,6 +17,20 @@ accountsRouter.get("/", async (req, res) => {
   }
 });
 
+accountsRouter.get("/accountsWithCustomers", async (req, res) => {
+  try {
+    const accountsDatabase = await createAccountsDatabase();
+    const accountsWithCustomers =
+      await accountsDatabase.fetchAllActiveJoinCustomers();
+    if (accountsWithCustomers.success) {
+      setHeaders(res);
+      return res.json(accountsWithCustomers.data);
+    } else throw new Error(accountsWithCustomers.error.message);
+  } catch (e) {
+    if (e instanceof Error) return res.status(404).json(e);
+  }
+});
+
 accountsRouter.get("/:id", async (req, res) => {
   const customerID = Number(req.params.id);
   try {

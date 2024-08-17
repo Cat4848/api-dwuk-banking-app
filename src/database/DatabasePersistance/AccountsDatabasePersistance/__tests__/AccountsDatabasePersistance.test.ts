@@ -44,6 +44,23 @@ test("if fetched all accounts from database", async () => {
   expect(accounts.data).toMatch(accountPattern);
 });
 
+test(`if fetch all active accounts joined with the customers table 
+  on customer_id have been fetched correctly`, async () => {
+  const accountID = 6219;
+  const accountsDatabase = await createAccountsDatabase();
+  const accountJoinCustomer =
+    await accountsDatabase.fetchAllActiveJoinCustomers();
+
+  if (!accountJoinCustomer.success) {
+    throw accountJoinCustomer.error;
+  }
+
+  expect(accountJoinCustomer.success).toBe(true);
+
+  const accountPattern = new RegExp(`"account_id":${accountID}`, "gi");
+  expect(accountJoinCustomer.data).toMatch(accountPattern);
+});
+
 test("if specific account has been fetched", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
