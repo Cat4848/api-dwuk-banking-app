@@ -2,6 +2,7 @@ import mysql, { ResultSetHeader } from "mysql2/promise";
 import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
 import Account from "../../../lib/Account/Account";
 import AccountRecord from "./declaration/AccountRecord";
+import AccountJoinCustomer from "./declaration/AccountJoinCustomer";
 
 export default class AccountsDatabasePersistance {
   private connection;
@@ -47,6 +48,35 @@ export default class AccountsDatabasePersistance {
       );
 
       const success = resultGenerator.generateSuccess(JSON.stringify(accounts));
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    } finally {
+      await this.connection.end();
+    }
+  }
+
+  async fetchAllActiveJoinCustomers() {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [accountJoinCustomer] = await this.connection.execute<
+        AccountJoinCustomer[]
+      >(
+        `SELECT
+          account_id,
+          first_name,
+          last_name
+          FROM accounts
+          INNER JOIN customers
+          USING (customer_id)
+          WHERE accounts.status = "ACTIVE"
+          ORDER BY accounts.last_activity_date
+          ;`
+      );
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(accountJoinCustomer)
+      );
       return success;
     } catch (e) {
       const error = resultGenerator.generateError(e);
