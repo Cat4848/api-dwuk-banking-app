@@ -48,8 +48,7 @@ test(`if fetch all active accounts joined with the customers table
   on customer_id have been fetched correctly`, async () => {
   const accountID = 6219;
   const accountsDatabase = await createAccountsDatabase();
-  const accountJoinCustomer =
-    await accountsDatabase.fetchAllActiveJoinCustomers();
+  const accountJoinCustomer = await accountsDatabase.fetchAllJoinCustomers();
 
   if (!accountJoinCustomer.success) {
     throw accountJoinCustomer.error;

@@ -21,7 +21,7 @@ accountsRouter.get("/accountsWithCustomers", async (req, res) => {
   try {
     const accountsDatabase = await createAccountsDatabase();
     const accountsWithCustomers =
-      await accountsDatabase.fetchAllActiveJoinCustomers();
+      await accountsDatabase.fetchAllJoinCustomers();
     if (accountsWithCustomers.success) {
       setHeaders(res);
       return res.json(accountsWithCustomers.data);

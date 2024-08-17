@@ -57,20 +57,23 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async fetchAllActiveJoinCustomers() {
+  async fetchAllJoinCustomers() {
     const resultGenerator = new ResultGenerator();
     try {
       const [accountJoinCustomer] = await this.connection.execute<
         AccountJoinCustomer[]
       >(
-        `SELECT
-          account_id,
+        `SELECT 
+	        account_id,
           first_name,
-          last_name
-          FROM accounts
-          INNER JOIN customers
+          last_name,
+          balance,
+          open_date,
+          last_activity_date,
+          status
+          FROM accounts 
+          INNER JOIN customers 
           USING (customer_id)
-          WHERE accounts.status = "ACTIVE"
           ORDER BY accounts.last_activity_date
           ;`
       );
