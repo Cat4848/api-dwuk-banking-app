@@ -8,14 +8,16 @@ import setHeaders from "../helpers/setHeaders";
 const transactionsRouter = express();
 
 transactionsRouter.post("/executeTransaction", async (req, res) => {
-  const fromAccountID = Number(req.body.from_customer_id) as number;
-  const toAccountID = Number(req.body.to_customer_id) as number;
+  const fromCustomerID = Number(req.body.from_customer_id) as number;
+  const toCustomerID = Number(req.body.to_customer_id) as number;
   const amount = Number(req.body.amount) as number;
   try {
     const accountsDatabase = await createAccountsDatabase();
-    const fromAccountResult = await accountsDatabase.fetchByID(fromAccountID);
+    const fromAccountResult =
+      await accountsDatabase.fetchByCustomerID(fromCustomerID);
     const accountsDatabase1 = await createAccountsDatabase();
-    const toAccountResult = await accountsDatabase1.fetchByID(toAccountID);
+    const toAccountResult =
+      await accountsDatabase1.fetchByCustomerID(toCustomerID);
 
     if (!fromAccountResult.success) throw fromAccountResult.error;
     if (!toAccountResult.success) throw toAccountResult.error;
