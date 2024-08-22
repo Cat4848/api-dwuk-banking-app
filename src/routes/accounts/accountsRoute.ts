@@ -70,6 +70,7 @@ accountsRouter.put("/close/:id", async (req, res) => {
 });
 
 accountsRouter.put("/activate/:id", async (req, res) => {
+  console.log("req.body put activate", req.body);
   const accountID = Number(req.params.id);
   try {
     const accountsDatabase = await createAccountsDatabase();
