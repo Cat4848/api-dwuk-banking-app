@@ -193,5 +193,6 @@ export default class AccountsDatabasePersistance {
     accountsID.forEach((accountID) => {
       return this.putAccountStatus(accountID, "ACTIVE");
     });
+
   }
 }
