@@ -7,7 +7,7 @@ import AccountJoinCustomer from "./declaration/AccountJoinCustomer";
 export default class AccountsDatabasePersistance {
   private connection;
 
-  constructor(connection: mysql.Connection) {
+  constructor(connection: mysql.Connection | mysql.Pool) {
     this.connection = connection;
   }
 
@@ -175,15 +175,23 @@ export default class AccountsDatabasePersistance {
   }
 
   async freeze(accountsID: number[]) {
-    
-    return this.putAccountStatus(accountID, "FROZEN");
+    let results = [];
+    for (let accountID of accountsID) {
+      const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
+      results.push(freezeResult);
+    }
+    return results;
   }
 
   async close(accountsID: number[]) {
-    return this.putAccountStatus(accountID, "CLOSED");
+    accountsID.forEach((accountID) => {
+      return this.putAccountStatus(accountID, "CLOSED");
+    });
   }
 
   async activate(accountsID: number[]) {
-    return this.putAccountStatus(accountID, "ACTIVE");
+    accountsID.forEach((accountID) => {
+      return this.putAccountStatus(accountID, "ACTIVE");
+    });
   }
 }
