@@ -2,7 +2,8 @@ import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnectio
 import AccountsTableAdminPersistance from "../AccountsTableAdminPersistance";
 
 test("if accounts table created successfully", async () => {
-  const connection = await DatabaseConnection.createConnection();
+  const dbConn = new DatabaseConnection();
+  const connection = await dbConn.createConnection();
   const accountsTable = new AccountsTableAdminPersistance(connection);
   const result = await accountsTable.create();
   await connection.end();

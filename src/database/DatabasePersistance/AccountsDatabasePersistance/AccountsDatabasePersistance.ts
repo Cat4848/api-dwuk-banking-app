@@ -174,15 +174,16 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async freeze(accountID: number) {
+  async freeze(accountsID: number[]) {
+    
     return this.putAccountStatus(accountID, "FROZEN");
   }
 
-  async close(accountID: number) {
+  async close(accountsID: number[]) {
     return this.putAccountStatus(accountID, "CLOSED");
   }
 
-  async activate(accountID: number) {
+  async activate(accountsID: number[]) {
     return this.putAccountStatus(accountID, "ACTIVE");
   }
 }
