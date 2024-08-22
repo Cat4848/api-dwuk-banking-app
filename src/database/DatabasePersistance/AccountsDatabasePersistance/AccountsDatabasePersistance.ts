@@ -149,14 +149,17 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async freeze(accountID: number) {
+  private async putAccountStatus(
+    accountID: number,
+    status: "ACTIVE" | "CLOSED" | "FROZEN"
+  ) {
     const resultGenerator = new ResultGenerator();
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
         `UPDATE accounts SET
-          status = "FROZEN"
+          status = ?
           WHERE account_id = ?;`,
-        [accountID]
+        [status, accountID]
       );
 
       const success = resultGenerator.generateSuccess(
@@ -169,48 +172,17 @@ export default class AccountsDatabasePersistance {
     } finally {
       await this.connection.end();
     }
+  }
+
+  async freeze(accountID: number) {
+    return this.putAccountStatus(accountID, "FROZEN");
   }
 
   async close(accountID: number) {
-    const resultGenerator = new ResultGenerator();
-    try {
-      const [confirmation] = await this.connection.execute<ResultSetHeader>(
-        `UPDATE accounts SET
-          status = "CLOSED"
-          WHERE account_id = ?;`,
-        [accountID]
-      );
-
-      const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmation)
-      );
-      return success;
-    } catch (e) {
-      const error = resultGenerator.generateError(e);
-      return error;
-    } finally {
-      await this.connection.end();
-    }
+    return this.putAccountStatus(accountID, "CLOSED");
   }
-  async activate(accountID: number) {
-    const resultGenerator = new ResultGenerator();
-    try {
-      const [confirmation] = await this.connection.execute<ResultSetHeader>(
-        `UPDATE accounts SET
-          status = "ACTIVE"
-          WHERE account_id = ?;`,
-        [accountID]
-      );
 
-      const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmation)
-      );
-      return success;
-    } catch (e) {
-      const error = resultGenerator.generateError(e);
-      return error;
-    } finally {
-      await this.connection.end();
-    }
+  async activate(accountID: number) {
+    return this.putAccountStatus(accountID, "ACTIVE");
   }
 }
