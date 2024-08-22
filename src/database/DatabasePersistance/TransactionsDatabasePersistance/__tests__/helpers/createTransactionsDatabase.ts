@@ -2,8 +2,7 @@ import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnectio
 import TransactionsDatabasePersistance from "../../TransactionsDatabasePersistance";
 
 export default async function createTransactionsDatabase() {
-  const dbConn = new DatabaseConnection();
-  const connection = await dbConn.createConnection();
+  const connection = await DatabaseConnection.createConnection();
   const transactionsDatabase = new TransactionsDatabasePersistance(connection);
   return transactionsDatabase;
 }
