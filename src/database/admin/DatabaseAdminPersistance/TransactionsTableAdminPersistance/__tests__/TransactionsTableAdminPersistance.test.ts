@@ -2,8 +2,7 @@ import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnectio
 import TransactionsTableAdminPersistance from "../TransactionsTableAdminPersistance";
 
 test("if the transactions table created successfully", async () => {
-  const dbConn = new DatabaseConnection();
-  const connection = await dbConn.createConnection();
+  const connection = await DatabaseConnection.createConnection();
   const transactionsTable = new TransactionsTableAdminPersistance(connection);
   const result = await transactionsTable.create();
   await connection.end();

@@ -45,7 +45,8 @@ accountsRouter.get("/:id", async (req, res) => {
   }
 });
 
-accountsRouter.put("/freeze/", async (req, res) => {
+accountsRouter.put("/freeze/:id", async (req, res) => {
+  const accountID = Number(req.params.id);
   try {
     const accountsDatabase = await createAccountsDatabase();
     const freezeResult = await accountsDatabase.freeze(accountID);
