@@ -154,29 +154,6 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async putAccountStatus(
-    accountID: number,
-    status: "ACTIVE" | "CLOSED" | "FROZEN"
-  ) {
-    const resultGenerator = new ResultGenerator();
-    try {
-      const [confirmation] = await this.connection.execute<ResultSetHeader>(
-        `UPDATE accounts SET
-          status = ?
-          WHERE account_id = ?;`,
-        [status, accountID]
-      );
-
-      const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmation)
-      );
-      return success;
-    } catch (e) {
-      const error = resultGenerator.generateError(e);
-      return error;
-    }
-  }
-
   async freeze(accountsID: number[]) {
     const resultGenerator = new ResultGenerator();
 
@@ -215,6 +192,29 @@ export default class AccountsDatabasePersistance {
     accountsID.forEach((accountID) => {
       return this.putAccountStatus(accountID, "ACTIVE");
     });
+  }
+
+  async putAccountStatus(
+    accountID: number,
+    status: "ACTIVE" | "CLOSED" | "FROZEN"
+  ) {
+    const resultGenerator = new ResultGenerator();
+    try {
+      const [confirmation] = await this.connection.execute<ResultSetHeader>(
+        `UPDATE accounts SET
+          status = ?
+          WHERE account_id = ?;`,
+        [status, accountID]
+      );
+
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(confirmation)
+      );
+      return success;
+    } catch (e) {
+      const error = resultGenerator.generateError(e);
+      return error;
+    }
   }
 
   async isAccount(accountID: number) {
