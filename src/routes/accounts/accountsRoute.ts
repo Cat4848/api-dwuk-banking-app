@@ -67,29 +67,4 @@ accountsRouter.put("/freeze/", async (req, res) => {
   }
 });
 
-// accountsRouter.put("/close/:id", async (req, res) => {
-//   const accountID = Number(req.params.id);
-//   try {
-//     const accountsDatabase = await createAccountsDatabase();
-//     const closeResult = await accountsDatabase.close(accountID);
-//     if (closeResult.success) return res.json(closeResult.data);
-//     else throw new Error(closeResult.error.message);
-//   } catch (e) {
-//     if (e instanceof Error) return res.status(404).json(e);
-//   }
-// });
-
-// accountsRouter.put("/activate/:id", async (req, res) => {
-//   console.log("req.body put activate", req.body);
-//   const accountID = Number(req.params.id);
-//   try {
-//     const accountsDatabase = await createAccountsDatabase();
-//     const activateResult = await accountsDatabase.activate(accountID);
-//     if (activateResult.success) return res.json(activateResult.data);
-//     else throw new Error(activateResult.error.message);
-//   } catch (e) {
-//     if (e instanceof Error) return res.status(404).json(e);
-//   }
-// });
-
 export default accountsRouter;

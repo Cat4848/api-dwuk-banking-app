@@ -93,9 +93,9 @@ test("if account containing customer_id has been fetched", async () => {
 });
 
 test("if specific account status changed to FROZEN", async () => {
-  const accountIDs = [210, 728];
+  const accountIDs = [210, 7282];
   const accountDatabasePool = createAccountsDatabaseOnPool();
-  await accountDatabasePool.freeze(accountIDs);
+  const freezeResult = await accountDatabasePool.freeze(accountIDs);
 
   for (let accountID of accountIDs) {
     const account = await accountDatabasePool.fetchByID(accountID);
@@ -192,4 +192,24 @@ test("if the account balance updates correctly", async () => {
 
   const balancePattern = new RegExp(`"balance":${newBalance}`);
   expect(updatedAccount.data).toMatch(balancePattern);
+});
+
+test("if account exists in the database", async () => {
+  const accountIDs = [210, 728];
+  const accountsDatabasePool = createAccountsDatabaseOnPool();
+
+  for (let accountID of accountIDs) {
+    const isAccountInDatabase = await accountsDatabasePool.isAccount(accountID);
+    expect(isAccountInDatabase).toBe(true);
+  }
+});
+
+test("if account does not exist in the database", async () => {
+  const accountIDs = [7852, 9852];
+  const accountsDatabasePool = createAccountsDatabaseOnPool();
+
+  for (let accountID of accountIDs) {
+    const isAccountInDatabase = await accountsDatabasePool.isAccount(accountID);
+    expect(isAccountInDatabase).toBe(false);
+  }
 });

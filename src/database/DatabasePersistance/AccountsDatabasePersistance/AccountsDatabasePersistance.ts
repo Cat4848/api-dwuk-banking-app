@@ -96,14 +96,19 @@ export default class AccountsDatabasePersistance {
         `SELECT * FROM accounts WHERE account_id = ?;`,
         [accountID]
       );
-
-      const success = resultGenerator.generateSuccess(JSON.stringify(account));
-      return success;
+      if (!account) {
+        throw new Error(
+          `The account with accountID ${accountID} does not exist in the database.`
+        );
+      } else {
+        const success = resultGenerator.generateSuccess(
+          JSON.stringify(account)
+        );
+        return success;
+      }
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
-    } finally {
-      // await this.connection.end();
     }
   }
 
@@ -162,10 +167,17 @@ export default class AccountsDatabasePersistance {
         [status, accountID]
       );
 
-      const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmation)
-      );
-      return success;
+      const accountByID = await this.fetchByID(accountID);
+      if (!accountByID.success) {
+        throw new Error(
+          `The account with accountID ${accountID} does not exist`
+        );
+      } else {
+        const success = resultGenerator.generateSuccess(
+          JSON.stringify(confirmation)
+        );
+        return success;
+      }
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
@@ -177,18 +189,25 @@ export default class AccountsDatabasePersistance {
 
     let successResults = [];
     let errorResults = [];
+
     for (let accountID of accountsID) {
+
       const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
-      if (freezeResult.success) successResults.push(freezeResult.data);
-      else errorResults.push(freezeResult.error);
+      if (freezeResult.success) {
+        successResults.push(freezeResult.data);
+      } else {
+        errorResults.push(freezeResult.error);
+      }
     }
 
     if (!errorResults.length) {
-      const success = resultGenerator.generateSuccess(successResults.join());
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(successResults)
+      );
       return success;
     } else {
       const error = resultGenerator.generateError(
-        new Error(errorResults.join())
+        new Error(JSON.stringify(errorResults))
       );
       return error;
     }
@@ -204,5 +223,11 @@ export default class AccountsDatabasePersistance {
     accountsID.forEach((accountID) => {
       return this.putAccountStatus(accountID, "ACTIVE");
     });
+  }
+
+  async isAccount(accountID: number) {
+    const account = await this.fetchByID(accountID);
+    if (account.success) return true;
+    return false;
   }
 }
