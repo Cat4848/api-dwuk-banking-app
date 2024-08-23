@@ -2,7 +2,8 @@ import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnectio
 import CustomersDatabasePersistance from "../../CustomersDatabasePersistance";
 
 export default async function createCustomersDatabase() {
-  const connection = await DatabaseConnection.createConnection();
+  const dbConnection = new DatabaseConnection();
+  const connection = await dbConnection.createConnection();
   const customersDatabase = new CustomersDatabasePersistance(connection);
   return customersDatabase;
 }
