@@ -1,5 +1,4 @@
 import mysql from "mysql2/promise";
-import "dotenv/config";
 
 export default class DatabaseConnection {
   private jawsDbUrl = process.env.JAWSDB_URL || "JAWSDB_URL missing";
