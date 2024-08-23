@@ -97,13 +97,19 @@ export default class AccountsDatabasePersistance {
         [accountID]
       );
 
-      const success = resultGenerator.generateSuccess(JSON.stringify(account));
-      return success;
+      if (!account) {
+        throw new Error(
+          `The account with accountID ${accountID} does not exist in the database.`
+        );
+      } else {
+        const success = resultGenerator.generateSuccess(
+          JSON.stringify(account)
+        );
+        return success;
+      }
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
-    } finally {
-      await this.connection.end();
     }
   }
 
@@ -149,11 +155,61 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  private async putAccountStatus(
+  async freeze(accountsID: number[]) {
+    const resultGenerator = new ResultGenerator();
+
+    let successResults = [];
+    let errorResults = [];
+
+    for (let accountID of accountsID) {
+      const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
+      if (freezeResult.success) {
+        successResults.push(freezeResult.data);
+      } else {
+        errorResults.push(freezeResult.error);
+      }
+    }
+
+    if (!errorResults.length) {
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(successResults)
+      );
+      return success;
+    } else {
+      const error = resultGenerator.generateError(
+        new Error(JSON.stringify(errorResults))
+      );
+      return error;
+    }
+  }
+
+  async close(accountsID: number[]) {
+    accountsID.forEach((accountID) => {
+      return this.putAccountStatus(accountID, "CLOSED");
+    });
+  }
+
+  async activate(accountsID: number[]) {
+    accountsID.forEach((accountID) => {
+      return this.putAccountStatus(accountID, "ACTIVE");
+    });
+  }
+
+  async putAccountStatus(
     accountID: number,
     status: "ACTIVE" | "CLOSED" | "FROZEN"
   ) {
     const resultGenerator = new ResultGenerator();
+
+    if (!(await this.isAccount(accountID))) {
+      const error = resultGenerator.generateError(
+        new Error(
+          `The account with accountID ${accountID} does not exist in the database.`
+        )
+      );
+      return error;
+    }
+
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
         `UPDATE accounts SET
@@ -169,30 +225,12 @@ export default class AccountsDatabasePersistance {
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
-    } finally {
-      await this.connection.end();
     }
   }
 
-  async freeze(accountsID: number[]) {
-    let results = [];
-    for (let accountID of accountsID) {
-      const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
-      results.push(freezeResult);
-    }
-    return results;
-  }
-
-  async close(accountsID: number[]) {
-    accountsID.forEach((accountID) => {
-      return this.putAccountStatus(accountID, "CLOSED");
-    });
-  }
-
-  async activate(accountsID: number[]) {
-    accountsID.forEach((accountID) => {
-      return this.putAccountStatus(accountID, "ACTIVE");
-    });
-
+  async isAccount(accountID: number) {
+    const account = await this.fetchByID(accountID);
+    if (account.success) return true;
+    return false;
   }
 }
