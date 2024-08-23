@@ -161,6 +161,18 @@ test("if putAccountStatus function changes account status correctly", async () =
   expect(activeAccount.data).toMatch(/"status":"ACTIVE"/gi);
 });
 
+test("if putAccountStatus function changes accounts status in a loop", async () => {
+  const accountIDs = [210, 728];
+  const accountsPool = createAccountsDatabaseOnPool();
+
+  for (let accountID of accountIDs) {
+    await accountsPool.putAccountStatus(accountID, "FROZEN");
+    const frozenAccount = await accountsPool.fetchByID(accountID);
+    if (!frozenAccount.success) throw frozenAccount.error;
+    expect(frozenAccount.data).toMatch(/"status":"FROZEN"/gi);
+  }
+});
+
 test("if the account balance updates correctly", async () => {
   const accountsDatabase = await createAccountsDatabase();
   const accountID = 6219;
