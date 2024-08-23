@@ -173,12 +173,25 @@ export default class AccountsDatabasePersistance {
   }
 
   async freeze(accountsID: number[]) {
-    let results = [];
+    const resultGenerator = new ResultGenerator();
+
+    let successResults = [];
+    let errorResults = [];
     for (let accountID of accountsID) {
       const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
-      results.push(freezeResult);
+      if (freezeResult.success) successResults.push(freezeResult.data);
+      else errorResults.push(freezeResult.error);
     }
-    return results;
+
+    if (!errorResults.length) {
+      const success = resultGenerator.generateSuccess(successResults.join());
+      return success;
+    } else {
+      const error = resultGenerator.generateError(
+        new Error(errorResults.join())
+      );
+      return error;
+    }
   }
 
   async close(accountsID: number[]) {
