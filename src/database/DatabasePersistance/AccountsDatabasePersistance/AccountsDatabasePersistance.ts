@@ -167,17 +167,10 @@ export default class AccountsDatabasePersistance {
         [status, accountID]
       );
 
-      const accountByID = await this.fetchByID(accountID);
-      if (!accountByID.success) {
-        throw new Error(
-          `The account with accountID ${accountID} does not exist`
-        );
-      } else {
-        const success = resultGenerator.generateSuccess(
-          JSON.stringify(confirmation)
-        );
-        return success;
-      }
+      const success = resultGenerator.generateSuccess(
+        JSON.stringify(confirmation)
+      );
+      return success;
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
@@ -191,7 +184,6 @@ export default class AccountsDatabasePersistance {
     let errorResults = [];
 
     for (let accountID of accountsID) {
-
       const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
       if (freezeResult.success) {
         successResults.push(freezeResult.data);
