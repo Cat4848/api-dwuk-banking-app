@@ -96,6 +96,7 @@ export default class AccountsDatabasePersistance {
         `SELECT * FROM accounts WHERE account_id = ?;`,
         [accountID]
       );
+
       if (!account) {
         throw new Error(
           `The account with accountID ${accountID} does not exist in the database.`
@@ -199,6 +200,16 @@ export default class AccountsDatabasePersistance {
     status: "ACTIVE" | "CLOSED" | "FROZEN"
   ) {
     const resultGenerator = new ResultGenerator();
+
+    if (!this.isAccount(accountID)) {
+      const error = resultGenerator.generateError(
+        new Error(
+          `The account with accountID ${accountID} does not exist in the database.`
+        )
+      );
+      return error;
+    }
+    
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
         `UPDATE accounts SET
