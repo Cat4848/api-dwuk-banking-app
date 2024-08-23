@@ -169,8 +169,6 @@ export default class AccountsDatabasePersistance {
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
-    } finally {
-      // await this.connection.end();
     }
   }
 
@@ -193,6 +191,5 @@ export default class AccountsDatabasePersistance {
     accountsID.forEach((accountID) => {
       return this.putAccountStatus(accountID, "ACTIVE");
     });
-
   }
 }

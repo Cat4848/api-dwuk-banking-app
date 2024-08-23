@@ -92,28 +92,20 @@ test("if account containing customer_id has been fetched", async () => {
   expect(account.data).toMatch(customerPattern);
 });
 
-const accountIDs = [6219, 210];
-
 test("if specific account status changed to FROZEN", async () => {
-  // const accountsDatabaseNewConnection = await createAccountsDatabase();
-  // const accountsDatabase = await createAccountsDatabase();
-  // await accountsDatabase.freeze(accountIDs);
-
+  const accountIDs = [210, 728];
   const accountDatabasePool = createAccountsDatabaseOnPool();
-  accountDatabasePool.freeze(accountIDs);
+  await accountDatabasePool.freeze(accountIDs);
 
   for (let accountID of accountIDs) {
     const account = await accountDatabasePool.fetchByID(accountID);
-
-    if (!account.success) {
-      throw account.error;
-    }
-
+    if (!account.success) throw account.error;
     expect(account.data).toMatch(/"status":"FROZEN"/gi);
   }
 });
 
 test("if specific account status changed to CLOSED", async () => {
+  const accountIDs = [210, 728];
   const accountsDatabase = await createAccountsDatabase();
 
   await accountsDatabase.close(accountIDs);
@@ -129,6 +121,7 @@ test("if specific account status changed to CLOSED", async () => {
 });
 
 test("if specific account status changed to ACTIVE", async () => {
+  const accountIDs = [210, 728];
   const accountsDatabase = await createAccountsDatabase();
 
   await accountsDatabase.activate(accountIDs);
@@ -166,10 +159,10 @@ test("if putAccountStatus function changes accounts status in a loop", async () 
   const accountsPool = createAccountsDatabaseOnPool();
 
   for (let accountID of accountIDs) {
-    await accountsPool.putAccountStatus(accountID, "FROZEN");
+    await accountsPool.putAccountStatus(accountID, "ACTIVE");
     const frozenAccount = await accountsPool.fetchByID(accountID);
     if (!frozenAccount.success) throw frozenAccount.error;
-    expect(frozenAccount.data).toMatch(/"status":"FROZEN"/gi);
+    expect(frozenAccount.data).toMatch(/"status":"ACTIVE"/gi);
   }
 });
 
