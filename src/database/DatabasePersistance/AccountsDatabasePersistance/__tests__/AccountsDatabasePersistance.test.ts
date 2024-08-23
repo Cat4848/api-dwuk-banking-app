@@ -91,14 +91,15 @@ test("if account containing customer_id has been fetched", async () => {
   expect(account.data).toMatch(customerPattern);
 });
 
+const accountIDs = [6219, 210];
+
 test("if specific account status changed to FROZEN", async () => {
   const accountsDatabase = await createAccountsDatabase();
-  const accountID = 6219;
 
-  await accountsDatabase.freeze(accountID);
+  await accountsDatabase.freeze(accountIDs);
 
   const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
 
   if (!account.success) {
     throw account.error;
@@ -109,12 +110,11 @@ test("if specific account status changed to FROZEN", async () => {
 
 test("if specific account status changed to CLOSED", async () => {
   const accountsDatabase = await createAccountsDatabase();
-  const accountID = 6219;
 
-  await accountsDatabase.close(accountID);
+  await accountsDatabase.close(accountIDs);
 
   const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
 
   if (!account.success) {
     throw account.error;
@@ -125,12 +125,11 @@ test("if specific account status changed to CLOSED", async () => {
 
 test("if specific account status changed to ACTIVE", async () => {
   const accountsDatabase = await createAccountsDatabase();
-  const accountID = 6219;
 
-  await accountsDatabase.activate(accountID);
+  await accountsDatabase.activate(accountIDs);
 
   const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountID);
+  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
 
   if (!account.success) {
     throw account.error;
