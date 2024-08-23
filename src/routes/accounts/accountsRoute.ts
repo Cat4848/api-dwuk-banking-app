@@ -47,13 +47,10 @@ accountsRouter.get("/:id", async (req, res) => {
 });
 
 accountsRouter.put("/freeze/", async (req, res) => {
-  console.log("freeze route -> req.body", req.body);
-  res.json("freeze route");
-  const accountsID: number[] = JSON.parse(req.body.accountsIds as string);
-  console.log("freeze route -> accountIDs", accountsID);
+  const accountIDs: number[] = JSON.parse(req.body.accountIDs);
   try {
     const accountsDatabase = createAccountsDatabaseOnPool();
-    const freezeResults = await accountsDatabase.freeze(accountsID);
+    const freezeResults = await accountsDatabase.freeze(accountIDs);
 
     if (!freezeResults.success) throw freezeResults.error;
     return res.json(freezeResults.data);
