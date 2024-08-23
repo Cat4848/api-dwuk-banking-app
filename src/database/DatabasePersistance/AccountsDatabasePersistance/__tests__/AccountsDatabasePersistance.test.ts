@@ -93,9 +93,9 @@ test("if account containing customer_id has been fetched", async () => {
 });
 
 test("if specific account status changed to FROZEN", async () => {
-  const accountIDs = [210, 7282];
+  const accountIDs = [210, 728];
   const accountDatabasePool = createAccountsDatabaseOnPool();
-  const freezeResult = await accountDatabasePool.freeze(accountIDs);
+  await accountDatabasePool.freeze(accountIDs);
 
   for (let accountID of accountIDs) {
     const account = await accountDatabasePool.fetchByID(accountID);

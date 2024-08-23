@@ -201,7 +201,7 @@ export default class AccountsDatabasePersistance {
   ) {
     const resultGenerator = new ResultGenerator();
 
-    if (!this.isAccount(accountID)) {
+    if (!(await this.isAccount(accountID))) {
       const error = resultGenerator.generateError(
         new Error(
           `The account with accountID ${accountID} does not exist in the database.`
@@ -209,7 +209,7 @@ export default class AccountsDatabasePersistance {
       );
       return error;
     }
-    
+
     try {
       const [confirmation] = await this.connection.execute<ResultSetHeader>(
         `UPDATE accounts SET
