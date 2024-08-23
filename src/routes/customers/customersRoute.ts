@@ -19,6 +19,7 @@ customersRouter.get("/", async (req, res) => {
 });
 
 customersRouter.put("/:id", async (req, res) => {
+  console.log("customersRoute -> req.body", req.body);
   const customer = createCustomerFromHTTPRequest(req);
   try {
     const customersDatabase = await createCustomersDatabase();
