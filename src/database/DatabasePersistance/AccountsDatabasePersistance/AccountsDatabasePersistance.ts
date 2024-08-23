@@ -103,7 +103,7 @@ export default class AccountsDatabasePersistance {
       const error = resultGenerator.generateError(e);
       return error;
     } finally {
-      await this.connection.end();
+      // await this.connection.end();
     }
   }
 
@@ -149,7 +149,7 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  private async putAccountStatus(
+  async putAccountStatus(
     accountID: number,
     status: "ACTIVE" | "CLOSED" | "FROZEN"
   ) {
@@ -170,7 +170,7 @@ export default class AccountsDatabasePersistance {
       const error = resultGenerator.generateError(e);
       return error;
     } finally {
-      await this.connection.end();
+      // await this.connection.end();
     }
   }
 

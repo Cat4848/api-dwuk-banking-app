@@ -1,6 +1,7 @@
 import Account from "../../../../lib/Account/Account";
 import IDGenerator from "../../../../lib/IDGenerator/IDGenerator";
 import createAccountsDatabase from "./helpers/createAccountsDatabase";
+import createAccountsDatabaseOnPool from "./helpers/createAccountsDatabaseOnPool";
 
 test("if newly posted account is in database", async () => {
   const accountsDatabase = await createAccountsDatabase();
@@ -94,18 +95,22 @@ test("if account containing customer_id has been fetched", async () => {
 const accountIDs = [6219, 210];
 
 test("if specific account status changed to FROZEN", async () => {
-  const accountsDatabase = await createAccountsDatabase();
+  // const accountsDatabaseNewConnection = await createAccountsDatabase();
+  // const accountsDatabase = await createAccountsDatabase();
+  // await accountsDatabase.freeze(accountIDs);
 
-  await accountsDatabase.freeze(accountIDs);
+  const accountDatabasePool = createAccountsDatabaseOnPool();
+  accountDatabasePool.freeze(accountIDs);
 
-  const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
+  for (let accountID of accountIDs) {
+    const account = await accountDatabasePool.fetchByID(accountID);
 
-  if (!account.success) {
-    throw account.error;
+    if (!account.success) {
+      throw account.error;
+    }
+
+    expect(account.data).toMatch(/"status":"FROZEN"/gi);
   }
-
-  expect(account.data).toMatch(/"status":"FROZEN"/gi);
 });
 
 test("if specific account status changed to CLOSED", async () => {
@@ -136,6 +141,24 @@ test("if specific account status changed to ACTIVE", async () => {
   }
 
   expect(account.data).toMatch(/"status":"ACTIVE"/gi);
+});
+
+test("if putAccountStatus function changes account status correctly", async () => {
+  const accountID = 210;
+  const accountsPoolConnection = createAccountsDatabaseOnPool();
+  await accountsPoolConnection.putAccountStatus(accountID, "FROZEN");
+
+  const frozenAccount = await accountsPoolConnection.fetchByID(accountID);
+  if (!frozenAccount.success) throw frozenAccount.error;
+  expect(frozenAccount.data).toMatch(/"status":"FROZEN"/gi);
+
+  const activateResult = await accountsPoolConnection.putAccountStatus(
+    accountID,
+    "ACTIVE"
+  );
+  const activeAccount = await accountsPoolConnection.fetchByID(accountID);
+  if (!activeAccount.success) throw activeAccount.error;
+  expect(activeAccount.data).toMatch(/"status":"ACTIVE"/gi);
 });
 
 test("if the account balance updates correctly", async () => {
