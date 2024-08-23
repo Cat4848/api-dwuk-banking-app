@@ -2,7 +2,8 @@ import DatabaseConnection from "../../../../DatabaseConnection/DatabaseConnectio
 import OfficersTableAdminPersistance from "../OfficersTableAdminPersistance";
 
 test("if officers table created successfully", async () => {
-  const connection = await DatabaseConnection.createConnection();
+  const dbConnection = new DatabaseConnection();
+  const connection = await dbConnection.createConnection();
   const officersTable = new OfficersTableAdminPersistance(connection);
   const result = await officersTable.create();
   await connection.end();
@@ -10,6 +11,6 @@ test("if officers table created successfully", async () => {
   if (!result.success) {
     throw result.error;
   }
-  
+
   expect(result.success).toBe(true);
 });
