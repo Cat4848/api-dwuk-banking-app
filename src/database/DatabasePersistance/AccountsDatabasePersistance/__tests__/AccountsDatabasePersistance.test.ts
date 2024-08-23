@@ -104,6 +104,17 @@ test("if specific account status changed to FROZEN", async () => {
   }
 });
 
+test("if error is produced when accountIDs do not exist in the database", async () => {
+  const accountIDs = [2278, 3378];
+  const accountsDatabasePool = createAccountsDatabaseOnPool();
+  const freezeResult = await accountsDatabasePool.freeze(accountIDs);
+  
+  expect(freezeResult.success).toBe(false);
+  if (!freezeResult.success) {
+    expect(freezeResult.error).toBeInstanceOf(Error);
+  }
+});
+
 test("if specific account status changed to CLOSED", async () => {
   const accountIDs = [210, 728];
   const accountsDatabase = await createAccountsDatabase();
