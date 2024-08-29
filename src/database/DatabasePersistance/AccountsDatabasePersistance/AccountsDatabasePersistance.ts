@@ -3,6 +3,7 @@ import { ResultGenerator } from "../../../lib/ResultGenerator/ResultGenerator";
 import Account from "../../../lib/Account/Account";
 import AccountRecord from "./declaration/AccountRecord";
 import AccountJoinCustomer from "./declaration/AccountJoinCustomer";
+import AccountStatus from "../../../lib/definitions/AccountStatus";
 
 export default class AccountsDatabasePersistance {
   private connection;
@@ -155,14 +156,29 @@ export default class AccountsDatabasePersistance {
     }
   }
 
+  async activate(accountsID: number[]) {
+    return this.processAccountStatus(accountsID, "ACTIVE");
+  }
+
+  async close(accountIDs: number[]) {
+    return this.processAccountStatus(accountIDs, "CLOSED");
+  }
+
   async freeze(accountsID: number[]) {
+    return this.processAccountStatus(accountsID, "FROZEN");
+  }
+
+  private async processAccountStatus(
+    accountsID: number[],
+    status: AccountStatus
+  ) {
     const resultGenerator = new ResultGenerator();
 
     let successResults = [];
     let errorResults = [];
 
     for (let accountID of accountsID) {
-      const freezeResult = await this.putAccountStatus(accountID, "FROZEN");
+      const freezeResult = await this.putAccountStatus(accountID, status);
       if (freezeResult.success) {
         successResults.push(freezeResult.data);
       } else {
@@ -181,18 +197,6 @@ export default class AccountsDatabasePersistance {
       );
       return error;
     }
-  }
-
-  async close(accountsID: number[]) {
-    accountsID.forEach((accountID) => {
-      return this.putAccountStatus(accountID, "CLOSED");
-    });
-  }
-
-  async activate(accountsID: number[]) {
-    accountsID.forEach((accountID) => {
-      return this.putAccountStatus(accountID, "ACTIVE");
-    });
   }
 
   async putAccountStatus(
