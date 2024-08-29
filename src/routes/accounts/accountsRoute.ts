@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
 import setHeaders from "../helpers/setHeaders";
 import createAccountsDatabaseOnPool from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabaseOnPool";
@@ -46,17 +46,33 @@ accountsRouter.get("/:id", async (req, res) => {
   }
 });
 
-accountsRouter.put("/freeze/", async (req, res) => {
+accountsRouter.put("/activate", async (req, res) => {
+  handlePutAccountStatus(req, res, "activate");
+});
+
+accountsRouter.put("/close", async (req, res) => {
+  handlePutAccountStatus(req, res, "close");
+});
+
+accountsRouter.put("/freeze", async (req, res) => {
+  handlePutAccountStatus(req, res, "freeze");
+});
+
+async function handlePutAccountStatus(
+  req: Request,
+  res: Response,
+  status: "activate" | "close" | "freeze"
+) {
   const accountIDs: number[] = JSON.parse(req.body.accountIDs);
   try {
     const accountsDatabase = createAccountsDatabaseOnPool();
-    const freezeResults = await accountsDatabase.freeze(accountIDs);
+    const freezeResults = await accountsDatabase[status](accountIDs);
 
     if (!freezeResults.success) throw freezeResults.error;
     return res.json(freezeResults.data);
   } catch (e) {
     return res.status(404).json(e);
   }
-});
+}
 
 export default accountsRouter;
