@@ -104,7 +104,7 @@ test("if specific account status changed to FROZEN", async () => {
   }
 });
 
-test("if error is produced when nonexistent accountIDs are frozen", async () => {
+test("if error is produced when nonexistent accountIDs are FROZEN", async () => {
   const accountIDs = [2278, 3378];
   const accountsDatabasePool = createAccountsDatabaseOnPool();
   const freezeResult = await accountsDatabasePool.freeze(accountIDs);
@@ -117,18 +117,26 @@ test("if error is produced when nonexistent accountIDs are frozen", async () => 
 
 test("if specific account status changed to CLOSED", async () => {
   const accountIDs = [210, 728];
-  const accountsDatabase = await createAccountsDatabase();
+  const accountDatabasePool = createAccountsDatabaseOnPool();
 
-  await accountsDatabase.close(accountIDs);
+  await accountDatabasePool.close(accountIDs);
 
-  const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
-
-  if (!account.success) {
-    throw account.error;
+  for (let accountID of accountIDs) {
+    const account = await accountDatabasePool.fetchByID(accountID);
+    if (!account.success) throw account.error;
+    expect(account.data).toMatch(/"status":"CLOSED"/gi);
   }
+});
 
-  expect(account.data).toMatch(/"status":"CLOSED"/gi);
+test("if error is produced when nonexistent accountIDs are CLOSED", async () => {
+  const accountsID = [2278, 3378];
+  const accountsDatabasePool = createAccountsDatabaseOnPool();
+  const closeResult = await accountsDatabasePool.close(accountsID);
+
+  expect(closeResult.success).toBe(false);
+  if (!closeResult.success) {
+    expect(closeResult.error).toBeInstanceOf(Error);
+  }
 });
 
 test("if specific account status changed to ACTIVE", async () => {
