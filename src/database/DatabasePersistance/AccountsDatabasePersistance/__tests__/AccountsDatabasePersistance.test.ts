@@ -141,18 +141,26 @@ test("if error is produced when nonexistent accountIDs are CLOSED", async () => 
 
 test("if specific account status changed to ACTIVE", async () => {
   const accountIDs = [210, 728];
-  const accountsDatabase = await createAccountsDatabase();
+  const accountDatabasePool = createAccountsDatabaseOnPool();
 
-  await accountsDatabase.activate(accountIDs);
+  await accountDatabasePool.activate(accountIDs);
 
-  const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const account = await accountsDatabaseNewConnection.fetchByID(accountIDs[0]);
-
-  if (!account.success) {
-    throw account.error;
+  for (let accountID of accountIDs) {
+    const account = await accountDatabasePool.fetchByID(accountID);
+    if (!account.success) throw account.error;
+    expect(account.data).toMatch(/"status":"ACTIVE"/gi);
   }
+});
 
-  expect(account.data).toMatch(/"status":"ACTIVE"/gi);
+test("if error is produced when nonexistent accountIDs are ACTIVE", async () => {
+  const accountsID = [2278, 3378];
+  const accountsDatabasePool = createAccountsDatabaseOnPool();
+  const closeResult = await accountsDatabasePool.activate(accountsID);
+
+  expect(closeResult.success).toBe(false);
+  if (!closeResult.success) {
+    expect(closeResult.error).toBeInstanceOf(Error);
+  }
 });
 
 test("if putAccountStatus function changes account status correctly", async () => {
