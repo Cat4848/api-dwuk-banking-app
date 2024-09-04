@@ -2,6 +2,7 @@ import express from "express";
 import createAccountsDatabase from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabase";
 import setHeaders from "../helpers/setHeaders";
 import handlePutAccountStatus from "./helpers/handlePutAccountStatus";
+import createAccountsDatabaseOnPool from "../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabaseOnPool";
 const accountsRouter = express();
 
 accountsRouter.get("/", async (req, res) => {
@@ -57,4 +58,22 @@ accountsRouter.put("/freeze", async (req, res) => {
   handlePutAccountStatus(req, res, "freeze");
 });
 
+accountsRouter.put("/balance", async (req, res) => {
+  interface ReqBody {
+    accountID: number;
+    balance: number;
+  }
+
+  const { accountID, balance }: ReqBody = JSON.parse(req.body);
+
+  try {
+    const accountsDatabase = createAccountsDatabaseOnPool();
+    const result = await accountsDatabase.putBalance(accountID, balance);
+
+    if (!result.success) throw result.error;
+    return res.json(result.data);
+  } catch (e) {
+    return res.status(404).json(e);
+  }
+});
 export default accountsRouter;
