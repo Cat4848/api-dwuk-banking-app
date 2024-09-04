@@ -59,12 +59,8 @@ accountsRouter.put("/freeze", async (req, res) => {
 });
 
 accountsRouter.put("/balance", async (req, res) => {
-  interface ReqBody {
-    accountID: number;
-    balance: number;
-  }
-
-  const { accountID, balance }: ReqBody = JSON.parse(req.body);
+  const accountID: number = JSON.parse(req.body.accountID);
+  const balance: number = JSON.parse(req.body.balance);
 
   try {
     const accountsDatabase = createAccountsDatabaseOnPool();
