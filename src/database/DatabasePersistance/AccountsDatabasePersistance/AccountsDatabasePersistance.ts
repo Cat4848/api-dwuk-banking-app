@@ -132,27 +132,26 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async putBalance(accounts: Account[]) {
+  async putBalance(accountID: number, balance: number) {
     const resultGenerator = new ResultGenerator();
-    const confirmationList: ResultSetHeader[] = [];
+
+    if (!(await this.isAccount(accountID))) {
+      return this.noAccountError(accountID);
+    }
+
     try {
-      accounts.forEach(async (account) => {
-        const [confirmation] = await this.connection.execute<ResultSetHeader>(
-          `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
-          [account.balance, account.account_id]
-        );
-        confirmationList.push(confirmation);
-      });
+      const [confirmation] = await this.connection.execute<ResultSetHeader>(
+        `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
+        [balance, accountID]
+      );
 
       const success = resultGenerator.generateSuccess(
-        JSON.stringify(confirmationList)
+        JSON.stringify(confirmation)
       );
       return success;
     } catch (e) {
       const error = resultGenerator.generateError(e);
       return error;
-    } finally {
-      await this.connection.end();
     }
   }
 
@@ -178,11 +177,11 @@ export default class AccountsDatabasePersistance {
     let errorResults = [];
 
     for (let accountID of accountsID) {
-      const freezeResult = await this.putAccountStatus(accountID, status);
-      if (freezeResult.success) {
-        successResults.push(freezeResult.data);
+      const result = await this.putAccountStatus(accountID, status);
+      if (result.success) {
+        successResults.push(result.data);
       } else {
-        errorResults.push(freezeResult.error);
+        errorResults.push(result.error);
       }
     }
 
@@ -206,12 +205,7 @@ export default class AccountsDatabasePersistance {
     const resultGenerator = new ResultGenerator();
 
     if (!(await this.isAccount(accountID))) {
-      const error = resultGenerator.generateError(
-        new Error(
-          `The account with accountID ${accountID} does not exist in the database.`
-        )
-      );
-      return error;
+      return this.noAccountError(accountID);
     }
 
     try {
@@ -236,5 +230,16 @@ export default class AccountsDatabasePersistance {
     const account = await this.fetchByID(accountID);
     if (account.success) return true;
     return false;
+  }
+
+  noAccountError(accountID: number) {
+    const resultGenerator = new ResultGenerator();
+
+    const error = resultGenerator.generateError(
+      new Error(
+        `The account with accountID ${accountID} does not exist in the database.`
+      )
+    );
+    return error;
   }
 }

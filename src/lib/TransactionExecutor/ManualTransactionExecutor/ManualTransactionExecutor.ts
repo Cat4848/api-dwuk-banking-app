@@ -6,6 +6,7 @@ import createTransactionsDatabase from "../../../database/DatabasePersistance/Tr
 import IDGenerator from "../../IDGenerator/IDGenerator";
 import officerID from "../../constants/officerID";
 import { ResultGenerator, Result } from "../../ResultGenerator/ResultGenerator";
+import createAccountsDatabaseOnPool from "../../../database/DatabasePersistance/AccountsDatabasePersistance/__tests__/helpers/createAccountsDatabaseOnPool";
 
 export default class ManualTransactionExecutor implements TransactionExecutor {
   #fromAccount: Account;
@@ -63,8 +64,17 @@ export default class ManualTransactionExecutor implements TransactionExecutor {
   }
 
   async updateAccountsDatabase() {
-    const accountsDatabase = await createAccountsDatabase();
-    await accountsDatabase.putBalance([this.#fromAccount, this.#toAccount]);
+    const accountsDatabase = createAccountsDatabaseOnPool();
+    
+    await accountsDatabase.putBalance(
+      this.#fromAccount.account_id,
+      this.#fromAccount.balance
+    );
+
+    await accountsDatabase.putBalance(
+      this.#toAccount.account_id,
+      this.#toAccount.balance
+    );
   }
 
   async updateTransactionsDatabase(amount: number) {

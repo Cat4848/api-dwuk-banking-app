@@ -9,10 +9,10 @@ export default async function handlePutAccountStatus(
   const accountIDs: number[] = JSON.parse(req.body.accountIDs);
   try {
     const accountsDatabase = createAccountsDatabaseOnPool();
-    const freezeResults = await accountsDatabase[status](accountIDs);
+    const results = await accountsDatabase[status](accountIDs);
 
-    if (!freezeResults.success) throw freezeResults.error;
-    return res.json(freezeResults.data);
+    if (!results.success) throw results.error;
+    return res.json(results.data);
   } catch (e) {
     return res.status(404).json(e);
   }
