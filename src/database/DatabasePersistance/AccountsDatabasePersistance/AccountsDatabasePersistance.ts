@@ -132,17 +132,13 @@ export default class AccountsDatabasePersistance {
     }
   }
 
-  async putBalance(accounts: Account[]) {
+  async putBalance(accountID: number, balance: number) {
     const resultGenerator = new ResultGenerator();
-    const confirmationList: ResultSetHeader[] = [];
     try {
-      accounts.forEach(async (account) => {
-        const [confirmation] = await this.connection.execute<ResultSetHeader>(
-          `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
-          [account.balance, account.account_id]
-        );
-        confirmationList.push(confirmation);
-      });
+      const [confirmation] = await this.connection.execute<ResultSetHeader>(
+        `UPDATE accounts SET balance = ? WHERE account_id = ?;`,
+        [account.balance, account.account_id]
+      );
 
       const success = resultGenerator.generateSuccess(
         JSON.stringify(confirmationList)
@@ -206,12 +202,7 @@ export default class AccountsDatabasePersistance {
     const resultGenerator = new ResultGenerator();
 
     if (!(await this.isAccount(accountID))) {
-      const error = resultGenerator.generateError(
-        new Error(
-          `The account with accountID ${accountID} does not exist in the database.`
-        )
-      );
-      return error;
+      return this.noAccountError(accountID);
     }
 
     try {
@@ -236,5 +227,16 @@ export default class AccountsDatabasePersistance {
     const account = await this.fetchByID(accountID);
     if (account.success) return true;
     return false;
+  }
+
+  noAccountError(accountID: number) {
+    const resultGenerator = new ResultGenerator();
+
+    const error = resultGenerator.generateError(
+      new Error(
+        `The account with accountID ${accountID} does not exist in the database.`
+      )
+    );
+    return error;
   }
 }
