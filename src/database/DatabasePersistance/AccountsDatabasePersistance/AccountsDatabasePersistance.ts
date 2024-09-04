@@ -177,11 +177,11 @@ export default class AccountsDatabasePersistance {
     let errorResults = [];
 
     for (let accountID of accountsID) {
-      const freezeResult = await this.putAccountStatus(accountID, status);
-      if (freezeResult.success) {
-        successResults.push(freezeResult.data);
+      const result = await this.putAccountStatus(accountID, status);
+      if (result.success) {
+        successResults.push(result.data);
       } else {
-        errorResults.push(freezeResult.error);
+        errorResults.push(result.error);
       }
     }
 
