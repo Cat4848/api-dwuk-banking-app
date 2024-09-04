@@ -194,24 +194,13 @@ test("if putAccountStatus function changes accounts status in a loop", async () 
 });
 
 test("if the account balance updates correctly", async () => {
-  const accountsDatabase = await createAccountsDatabase();
+  const accountsDatabase = createAccountsDatabaseOnPool();
   const accountID = 6219;
-  const newBalance = 1000;
-  const account = new Account({
-    account_id: accountID,
-    customer_id: 59,
-    officer_id: 1,
-    open_date: new Date().toISOString(),
-    last_activity_date: new Date().toISOString(),
-    status: "ACTIVE",
-    balance: newBalance
-  });
+  const newBalance = 2000;
 
-  await accountsDatabase.putBalance([account]);
+  await accountsDatabase.putBalance(accountID, newBalance);
 
-  const accountsDatabaseNewConnection = await createAccountsDatabase();
-  const updatedAccount =
-    await accountsDatabaseNewConnection.fetchByID(accountID);
+  const updatedAccount = await accountsDatabase.fetchByID(accountID);
 
   if (!updatedAccount.success) {
     throw updatedAccount.error;
